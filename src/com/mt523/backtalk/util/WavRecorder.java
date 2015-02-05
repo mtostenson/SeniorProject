@@ -1,3 +1,8 @@
+/**
+ * @Title WavRecorder.java 
+ * @author Michael Tostenson
+ */
+
 package com.mt523.backtalk.util;
 
 import java.io.File;
