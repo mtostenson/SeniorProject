@@ -2,6 +2,7 @@ package com.mt523.backtalk;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import android.media.MediaPlayer;
@@ -22,19 +23,25 @@ public class MainActivity extends ActionBarActivity {
 
    private WavRecorder recorder;
    private Button btnRecord;
-   private Button btnPlay;
+   private Button btnForward;
+   private Button btnReverse;
+   private File folder;
 
    @Override
-   protected void onCreate(Bundle savedInstanceState) {
+   protected void onCreate(Bundle savedInstanceState) {      
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
+      folder = new File(Environment.getExternalStorageDirectory()
+            + "/BackTalk/");
       btnRecord = (Button) findViewById(R.id.btnRecord);
-      btnPlay = (Button) findViewById(R.id.btnPlay);
+      btnForward = (Button) findViewById(R.id.btnForward);
+      btnReverse = (Button) findViewById(R.id.btnReverse);
       btnRecord.setOnTouchListener(new OnTouchListener() {
          @Override
          public boolean onTouch(View v, MotionEvent e) {
             if (e.getAction() == MotionEvent.ACTION_DOWN) {
-               btnPlay.setEnabled(false);
+               btnForward.setEnabled(false);
+               btnReverse.setEnabled(false);
                recorder = new WavRecorder(MainActivity.this);
                recorder.prepare();
                recorder.start();
@@ -45,7 +52,8 @@ public class MainActivity extends ActionBarActivity {
                   recorder.reverse();
                   recorder.release();
                   recorder = null;
-                  btnPlay.setEnabled(true);
+                  btnForward.setEnabled(true);
+                  btnReverse.setEnabled(true);
                   btnRecord.setEnabled(true);
                   return true;
                } catch (IOException e1) {
@@ -55,15 +63,13 @@ public class MainActivity extends ActionBarActivity {
             return false;
          }
       });
-      btnPlay.setOnClickListener(new OnClickListener() {
+      btnForward.setOnClickListener(new OnClickListener() {
          @Override
          public void onClick(View v) {
             MediaPlayer player = new MediaPlayer();
-            try {
-               File folder = new File(Environment.getExternalStorageDirectory()
-                     + "/BackTalk/");
+            try {               
                FileInputStream fis = new FileInputStream(folder
-                     .getAbsolutePath() + "/EXT_TEST_REVERSE.wav");
+                     .getAbsolutePath() + "/EXT_TEST_FORWARD.wav");
                player.setDataSource(fis.getFD());
                player.prepare();
                player.start();
@@ -76,6 +82,26 @@ public class MainActivity extends ActionBarActivity {
             } catch (IOException e) {
                e.printStackTrace();
             }
+         }
+      });
+      btnReverse.setOnClickListener(new OnClickListener() {         
+         @Override
+         public void onClick(View arg0) {
+            MediaPlayer player = new MediaPlayer();
+            try {
+               FileInputStream fis = new FileInputStream(folder.getAbsolutePath() + "/EXT_TEST_REVERSE.wav");
+               player.setDataSource(fis.getFD());
+               player.prepare();
+               player.start();
+            } catch (FileNotFoundException e) {
+               e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+               e.printStackTrace();
+            } catch (IllegalStateException e) {
+               e.printStackTrace();
+            } catch (IOException e) {
+               e.printStackTrace();
+            } 
          }
       });
    }

@@ -18,13 +18,23 @@
         android:text="Hold to Record" />
 
     <Button
-        android:id="@+id/btnPlay"
+        android:id="@+id/btnForward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/btnRecord"
         android:layout_alignRight="@+id/btnRecord"
         android:layout_below="@+id/btnRecord"
         android:enabled="false"
-        android:text="Play" />
+        android:text="Forward" />
+    
+    <Button
+        android:id="@+id/btnReverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnRecord"
+        android:layout_alignRight="@+id/btnRecord"
+        android:layout_below="@+id/btnForward"
+        android:enabled="false"
+        android:text="Reverse" />
 
 </RelativeLayout>
