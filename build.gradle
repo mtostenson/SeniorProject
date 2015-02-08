@@ -1,0 +1,9 @@
+subprojects {
+	apply plugin: 'java'
+}
+
+project('BackTalkServer') {
+	dependencies {
+		compile project(':BackTalkPackets')
+	}
+}
