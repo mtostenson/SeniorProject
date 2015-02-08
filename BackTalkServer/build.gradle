@@ -1,0 +1,12 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "Server"
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile "mysql:mysql-connector-java:5.1.34"
+}
