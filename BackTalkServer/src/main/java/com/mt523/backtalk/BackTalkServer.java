@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
-import com.mt523.backtalk.packets.BasePacket;
-
 class Server {
   
    private ServerSocket serverSocket;
