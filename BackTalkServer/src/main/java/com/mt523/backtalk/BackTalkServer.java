@@ -8,8 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
+import com.mt523.backtalk.packets.BasePacket;
+
 class Server {
-  
+
    private ServerSocket serverSocket;
    private Socket socket;
    private static final int PORT = 4242;
@@ -17,27 +19,33 @@ class Server {
    private Statement statement;
    private ResultSet resultSet;
    private String query;
-   private final String dbAddr = 
-      "jdbc:mysql://backtalk.cri0r2kpn2sn.us-west-1.rds.amazonaws.com/" +
-      "backtalk?user=admin&password=theH3r0ofCanton";
+   private final String dbAddr = "jdbc:mysql://backtalk.cri0r2kpn2sn.us-west-1.rds.amazonaws.com/"
+         + "backtalk?user=admin&password=theH3r0ofCanton";
 
-   public Server(){
+   public Server() {
       try {
-         // Connect to database        
+         // Connect to database
          Class.forName("com.mysql.jdbc.Driver").newInstance();
          connection = DriverManager.getConnection(dbAddr);
          statement = connection.createStatement();
          query = "SELECT * FROM cards";
 
-         /*
          serverSocket = new ServerSocket(PORT);
          System.out.printf("Server listening on port %d.\n", PORT);
          socket = serverSocket.accept();
-         System.out.printf("Connected to %s.\n", socket.getRemoteSocketAddress());
-         */
+         System.out.printf("Connected to %s.\n",
+               socket.getRemoteSocketAddress());
+
+         ObjectOutputStream output = new ObjectOutputStream(
+               socket.getOutputStream());
+         ObjectInputStream input = new ObjectInputStream(
+               socket.getInputStream());
 
          resultSet = statement.executeQuery(query);
-         while(resultSet.next()) {
+         while (resultSet.next()) {
+            output.writeObject(new BasePacket(resultSet.getString("question"),
+                  resultSet.getString("answer"), resultSet
+                        .getString("category")));
             System.out.println("Question: " + resultSet.getString("question"));
          }
 
@@ -52,4 +60,3 @@ class Server {
       new Server();
    }
 }
-
