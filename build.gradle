@@ -7,3 +7,9 @@ project('BackTalkServer') {
 		compile project(':BackTalkPackets')
 	}
 }
+
+project('BackTalkTestClient') {
+	dependencies {
+		compile project(':BackTalkPackets')
+	}
+}
