@@ -1,23 +1,13 @@
 package com.mt523.backtalk;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import android.media.MediaPlayer;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
@@ -39,7 +29,6 @@ public class MainActivity extends ActionBarActivity implements
 
 		folder = new File(Environment.getExternalStorageDirectory()
 				+ "/BackTalk/");
-
 	}
 
 	@Override
@@ -65,6 +54,7 @@ public class MainActivity extends ActionBarActivity implements
 	public void onGuess() {
 		getFragmentManager().beginTransaction()
 				.replace(R.id.container2, new GuessFragment())
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 				.addToBackStack(null).commit();
 	}
 
