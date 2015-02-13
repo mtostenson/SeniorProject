@@ -7,20 +7,26 @@
 
     <Button
         android:id="@+id/btnRecord"
+        style="@style/button_text"
+        android:background="@drawable/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Record" />
+        android:text="RECORD" />
 
     <Button
         android:id="@+id/btnGuess"
+        style="@style/button_text"
+        android:background="@drawable/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Guess" />
+        android:text="GUESS" />
 
     <Button
         android:id="@+id/btnPlay"
+        style="@style/button_text"
+        android:background="@drawable/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play" />
+        android:text="PLAY" />
 
 </LinearLayout>

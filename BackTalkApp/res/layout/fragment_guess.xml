@@ -17,9 +17,11 @@
 
     <Button
         android:id="@+id/btnSubmitGuess"
+        style="@style/button_text"
+        android:background="@drawable/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Button" />
+        android:text="GUESS" />
 
 </LinearLayout>

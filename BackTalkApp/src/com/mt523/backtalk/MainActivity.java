@@ -17,15 +17,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.util.WavRecorder;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements
+		RecorderControlFragment.RecordControlInterface {
 
 	private WavRecorder recorder;
 	private File folder;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
 
 		folder = new File(Environment.getExternalStorageDirectory()
 				+ "/BackTalk/");
-		
+
 	}
 
 	@Override
@@ -57,5 +60,24 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+	@Override
+	public void onGuess() {
+		getFragmentManager().beginTransaction()
+				.replace(R.id.container2, new GuessFragment())
+				.addToBackStack(null).commit();
+	}
+
+	@Override
+	public void onRecord() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPlay() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -15,33 +15,48 @@ import com.mt523.backtalk.R;
 
 public class RecorderControlFragment extends Fragment {
 
-	private Button btnGuess;
-	private RecorderControlFragment recorderControlFragment = this;
-
 	public RecorderControlFragment() {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater,
-			final ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.controller, container, false);
-
-		btnGuess = (Button) rootView.findViewById(R.id.btnGuess);
-		btnGuess.setOnClickListener(new OnClickListener() {
+		final RecordControlInterface activity = (RecordControlInterface) getActivity();
+		OnClickListener onClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(RecorderControlFragment.class.getName(), "CLICK!");
-				getFragmentManager()
-						.beginTransaction()
-						.addToBackStack(null)
-						.replace(container.getId(), new GuessFragment())
-						.setTransition(
-								FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-						.commit();
+				switch (v.getId()) {
+				case R.id.btnRecord: {
+					activity.onRecord();
+					break;
+				}
+				case R.id.btnGuess: {
+					Log.d(activity.getClass().getName(), "CLICKCLICKCLICK");
+					activity.onGuess();
+					break;
+				}
+				case R.id.btnPlay: {
+					activity.onPlay();
+					break;
+				}
+				}
 			}
-		});
-
+		};
+		((Button) rootView.findViewById(R.id.btnRecord))
+				.setOnClickListener(onClickListener);
+		((Button) rootView.findViewById(R.id.btnGuess))
+				.setOnClickListener(onClickListener);
+		((Button) rootView.findViewById(R.id.btnPlay))
+				.setOnClickListener(onClickListener);
 		return rootView;
 	}
 
+	public interface RecordControlInterface {
+		public void onGuess();
+
+		public void onRecord();
+
+		public void onPlay();
+	}
 }
