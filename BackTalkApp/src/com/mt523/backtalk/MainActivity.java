@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		protected BasePacket doInBackground(Void... arg0) {
 			try {
-				connection = BtConnection.connect();
+				connection = new BtConnection();
 				return (BasePacket) connection.getInput().readObject();
 			} catch (Exception e) {
 				Log.e(MainActivity.class.getName(), "Packet read error:" + e.getMessage());

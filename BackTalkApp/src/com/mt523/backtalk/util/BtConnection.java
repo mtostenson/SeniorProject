@@ -9,15 +9,15 @@ import java.net.UnknownHostException;
 
 public class BtConnection {
 
-	private static final int PORT = 4242;
-	private static final String ADDRESS = "ec2-54-153-115-148.us-west-1.compute.amazonaws.com";
+	private final int PORT = 4242;
+	private final String ADDRESS = "ec2-54-153-115-148.us-west-1.compute.amazonaws.com";
 
 	private InetAddress inetAddress;
 	private Socket socket;
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 
-	private BtConnection() {
+	public BtConnection() {
 		try {
 			inetAddress = InetAddress.getByName(ADDRESS);
 			socket = new Socket(inetAddress, PORT);
@@ -30,18 +30,8 @@ public class BtConnection {
 		}
 	}
 
-	public static BtConnection connect() {
-		return new BtConnection();
-	}
-
 	public void close() {
 		try {
-			if (input != null) {
-				input.close();
-			}
-			if (output != null) {
-				output.close();
-			}
 			if (socket != null) {
 				socket.close();
 			}
