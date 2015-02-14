@@ -1,16 +1,22 @@
 package com.mt523.backtalk;
 
 import java.io.File;
+import java.util.Vector;
 
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
+import com.mt523.backtalk.packets.BasePacket;
+import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
 
 public class MainActivity extends ActionBarActivity implements
@@ -18,6 +24,7 @@ public class MainActivity extends ActionBarActivity implements
 
 	private WavRecorder recorder;
 	private File folder;
+	private Vector<BasePacket> cards;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,8 @@ public class MainActivity extends ActionBarActivity implements
 
 		folder = new File(Environment.getExternalStorageDirectory()
 				+ "/BackTalk/");
+		
+		new CardGetter().execute();
 	}
 
 	@Override
@@ -67,6 +76,31 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onPlay() {
 		// TODO Auto-generated method stub
+
+	}
+
+	private class CardGetter extends AsyncTask<Void, Void, BasePacket> {
+
+		private BtConnection connection;
+
+		@Override
+		protected BasePacket doInBackground(Void... arg0) {
+			try {
+				 connection = BtConnection.connect();
+				return (BasePacket) connection.getInput().readObject();
+			} catch (Exception e) {
+				Log.e(MainActivity.class.getName(), "Packet read error.");
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(BasePacket result) {
+			super.onPostExecute(result);
+			connection.close();
+			getFragmentManager().beginTransaction()
+					.add(R.id.container1, new CardFragment(result)).commit();
+		}
 
 	}
 

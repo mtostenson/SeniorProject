@@ -8,10 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mt523.backtalk.R;
+import com.mt523.backtalk.packets.BasePacket;
 
 public class CardFragment extends Fragment {
 
-	public CardFragment() {
+	BasePacket card;
+	
+	public CardFragment(BasePacket basePacket) {
+		super();
 	}
 
 	@Override
