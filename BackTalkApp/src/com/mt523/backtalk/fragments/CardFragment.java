@@ -12,19 +12,19 @@ import com.mt523.backtalk.packets.BasePacket;
 
 public class CardFragment extends Fragment {
 
-	BasePacket card;
-	
-	public CardFragment(BasePacket basePacket) {
-		super();
-		card = basePacket;
-	}
+    BasePacket card;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater
-				.inflate(R.layout.card_layout, container, false);
-		((TextView) rootView.findViewById(R.id.display)).setText(card.getQ());
-		return rootView;
-	}
+    public CardFragment(BasePacket basePacket) {
+        super();
+        card = basePacket;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View rootView = inflater
+                .inflate(R.layout.card_layout, container, false);
+        ((TextView) rootView.findViewById(R.id.display)).setText(card.getQ());
+        return rootView;
+    }
 }
