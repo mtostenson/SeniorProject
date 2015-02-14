@@ -16,6 +16,7 @@ public class CardFragment extends Fragment {
 	
 	public CardFragment(BasePacket basePacket) {
 		super();
+		card = basePacket;
 	}
 
 	@Override

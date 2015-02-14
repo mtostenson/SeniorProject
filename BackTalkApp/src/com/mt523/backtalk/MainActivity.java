@@ -36,7 +36,6 @@ public class MainActivity extends ActionBarActivity implements
 
 		folder = new File(Environment.getExternalStorageDirectory()
 				+ "/BackTalk/");
-		
 		new CardGetter().execute();
 	}
 
@@ -86,10 +85,10 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		protected BasePacket doInBackground(Void... arg0) {
 			try {
-				 connection = BtConnection.connect();
+				connection = BtConnection.connect();
 				return (BasePacket) connection.getInput().readObject();
 			} catch (Exception e) {
-				Log.e(MainActivity.class.getName(), "Packet read error.");
+				Log.e(MainActivity.class.getName(), "Packet read error:" + e.getMessage());
 				return null;
 			}
 		}
@@ -97,7 +96,9 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		protected void onPostExecute(BasePacket result) {
 			super.onPostExecute(result);
-			connection.close();
+			if(connection != null) {
+				connection.close();
+			}
 			getFragmentManager().beginTransaction()
 					.add(R.id.container1, new CardFragment(result)).commit();
 		}
