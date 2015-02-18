@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.packets.BasePacket;
+import com.mt523.backtalk.util.FontUtil;
 
 public class CardFragment extends Fragment {
 
@@ -24,7 +25,10 @@ public class CardFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater
                 .inflate(R.layout.card_layout, container, false);
-        ((TextView) rootView.findViewById(R.id.display)).setText(card.getQ());
+        TextView tv = (TextView) rootView.findViewById(R.id.display);
+        tv.setTypeface(FontUtil.instance(getActivity().getApplicationContext())
+                .getMainFont());
+        tv.setText(card.getQ());
         return rootView;
     }
 }

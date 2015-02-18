@@ -39,7 +39,7 @@ public class BtConnection {
             e.printStackTrace();
         }
     }
-
+      
     public ObjectOutputStream getOutput() {
         return output;
     }
