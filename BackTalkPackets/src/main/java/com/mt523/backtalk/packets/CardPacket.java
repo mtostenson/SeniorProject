@@ -1,5 +1,7 @@
 package com.mt523.backtalk.packets;
 
+import java.io.ObjectOutputStream;
+
 public class CardPacket implements IBackTalkPacket {
 
     private int id;
@@ -40,7 +42,7 @@ public class CardPacket implements IBackTalkPacket {
     @Override
     public String toString() {
         return String.format(
-                "\nid: %d\nquestion: %s\nanswer: %s\ncategory: %s\n", id,
+                "id: %d\nquestion: %s\nanswer: %s\ncategory: %s\n", id,
                 question, answer, category);
     }
 }

@@ -1,5 +1,6 @@
 package com.mt523.backtalk;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -12,14 +13,12 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import com.mt523.backtalk.packets.CardPacket;
+import com.mt523.backtalk.packets.IBackTalkPacket;
 
 class Server {
 
     // ServerSocket to open socket connections with clients
     private ServerSocket serverSocket;
-
-    // Socket connected to client
-    private Socket socket;
 
     // Port that server listens on
     private static final int PORT = 4242;
@@ -38,7 +37,7 @@ class Server {
 
     // Address of the database which holds the content
     private final String dbAddr = "jdbc:mysql://backtalk.cri0r2kpn2sn.us-west-1.rds.amazonaws.com/"
-            + "backtalk?user=admin&password=theH3r0ofCanton";
+            + "backtalk?user=admin&password=theH3r0ofCanton&autoReconnect=true";
 
     public Server() {
 
@@ -62,15 +61,9 @@ class Server {
             serverSocket = new ServerSocket(PORT);
             System.out.printf("Server listening on port %d.\n", PORT);
             while (true) {
-                socket = serverSocket.accept();
-                System.out.printf("Connected to %s.\n",
-                        socket.getRemoteSocketAddress());
-                ObjectOutputStream output = new ObjectOutputStream(
-                        socket.getOutputStream());
-                ObjectInputStream input = new ObjectInputStream(
-                        socket.getInputStream());
-                socket.close();
+                new ServerWorker(serverSocket.accept()).start();
             }
+
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         } catch (Exception e) {

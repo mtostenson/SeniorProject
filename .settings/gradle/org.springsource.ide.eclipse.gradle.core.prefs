@@ -1,0 +1,5 @@
+#org.springsource.ide.eclipse.gradle.core.preferences.GradleProjectPreferences
+#Fri Feb 13 22:10:56 PST 2015
+build.family.org.gradle.tooling.model.eclipse.HierarchicalEclipseProject=;BackTalkPackets;BackTalkServer;BackTalkTestClient;
+org.springsource.ide.eclipse.gradle.linkedresources=
+org.springsource.ide.eclipse.gradle.rootprojectloc=
