@@ -2,10 +2,10 @@ package com.mt523.backtalk.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
@@ -21,31 +21,40 @@ public class RecorderControlFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.controller, container, false);
         final RecordControlInterface activity = (RecordControlInterface) getActivity();
-        OnClickListener onClickListener = new OnClickListener() {
+        OnTouchListener onTouchListener = new OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent m) {
                 switch (v.getId()) {
                 case R.id.btnRecord: {
-                    activity.onRecord();
-                    break;
+                    if (m.getAction() == MotionEvent.ACTION_DOWN) {
+                        activity.onRecord();
+                    } else if (m.getAction() == MotionEvent.ACTION_UP) {
+                        activity.onStopRecord();
+                    }
+                    return true;
                 }
                 case R.id.btnGuess: {
-                    activity.onGuess();
-                    break;
+                    if (m.getAction() == MotionEvent.ACTION_DOWN) {
+                        activity.onGuess();
+                    }
+                    return true;
                 }
                 case R.id.btnPlay: {
-                    activity.onPlay();
-                    break;
+                    if (m.getAction() == MotionEvent.ACTION_DOWN) {
+                        activity.onPlay();
+                    }
+                    return true;
                 }
                 }
+                return false;
             }
         };
         ((Button) rootView.findViewById(R.id.btnRecord))
-                .setOnClickListener(onClickListener);
+                .setOnTouchListener(onTouchListener);
         ((Button) rootView.findViewById(R.id.btnGuess))
-                .setOnClickListener(onClickListener);
+                .setOnTouchListener(onTouchListener);
         ((Button) rootView.findViewById(R.id.btnPlay))
-                .setOnClickListener(onClickListener);
+                .setOnTouchListener(onTouchListener);
         return rootView;
     }
 
@@ -53,6 +62,8 @@ public class RecorderControlFragment extends Fragment {
         public void onGuess();
 
         public void onRecord();
+
+        public void onStopRecord();
 
         public void onPlay();
     }

@@ -77,7 +77,6 @@ class BackTalkServer {
         private Socket socket;
         ObjectInputStream input;
         ObjectOutputStream output;
-        private ClientPacket clientPacket;
         private ServerPacket serverPacket;
 
         public ServerWorker(Socket socket) {

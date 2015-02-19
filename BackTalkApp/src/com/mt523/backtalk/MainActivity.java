@@ -1,8 +1,11 @@
 package com.mt523.backtalk;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import android.app.FragmentTransaction;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,8 +16,10 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.mt523.backtalk.fragments.CardFragment;
+import com.mt523.backtalk.fragments.CardFragment.CardInterface;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
+import com.mt523.backtalk.fragments.RecorderControlFragment.RecordControlInterface;
 import com.mt523.backtalk.packets.client.CardPacket;
 import com.mt523.backtalk.packets.client.ClientPacket.IBackTalkClient;
 import com.mt523.backtalk.packets.server.CardRequest;
@@ -22,7 +27,7 @@ import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
 
 public class MainActivity extends ActionBarActivity implements
-        RecorderControlFragment.RecordControlInterface, IBackTalkClient {
+        RecordControlInterface, CardInterface, IBackTalkClient {
 
     private WavRecorder recorder;
     private File folder;
@@ -71,12 +76,42 @@ public class MainActivity extends ActionBarActivity implements
 
     @Override
     public void onRecord() {
-        new CardGetter(card.getId() - 1).execute();
+        recorder = new WavRecorder(MainActivity.this);
+        recorder.prepare();
+        recorder.start();
+    }
+
+    @Override
+    public void onStopRecord() {
+        recorder.stop();
+        try {
+            recorder.reverse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        recorder.release();
     }
 
     @Override
     public void onPlay() {
-        new CardGetter(card.getId() + 1).execute();
+        MediaPlayer player = new MediaPlayer();
+        try {
+            File folder = new File(Environment.getExternalStorageDirectory()
+                    + "/BackTalk/");
+            FileInputStream fis = new FileInputStream(folder.getAbsolutePath()
+                    + "/EXT_TEST_REVERSE.wav");
+            player.setDataSource(fis.getFD());
+            player.prepare();
+            player.start();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private class CardGetter extends AsyncTask<Void, Void, CardPacket> {
@@ -120,6 +155,16 @@ public class MainActivity extends ActionBarActivity implements
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.container1, new CardFragment(card)).commit();
 
+    }
+
+    @Override
+    public void nextCard() {
+        new CardGetter(card.getId() + 1).execute();
+    }
+
+    @Override
+    public void prevCard() {
+        new CardGetter(card.getId() - 1).execute();
     }
 
 }
