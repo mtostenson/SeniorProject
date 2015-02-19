@@ -1,3 +1,2 @@
 include 'BackTalkPackets'
 include 'BackTalkServer'
-include 'BackTalkTestClient'
