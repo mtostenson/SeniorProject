@@ -1,9 +1,9 @@
 package com.mt523.backtalk;
 
 import java.io.File;
-import java.util.Vector;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +11,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
@@ -27,12 +30,13 @@ public class MainActivity extends ActionBarActivity implements
     private WavRecorder recorder;
     private File folder;
     private CardPacket card;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getFragmentManager().beginTransaction()
                 .add(R.id.container2, new RecorderControlFragment()).commit();
 
@@ -81,15 +85,16 @@ public class MainActivity extends ActionBarActivity implements
     private class CardGetter extends AsyncTask<Void, Void, CardPacket> {
         private int id;
         private BtConnection connection;
+
         public CardGetter(int id) {
             this.id = id;
         }
-        
+
         @Override
         protected CardPacket doInBackground(Void... arg0) {
             try {
                 connection = new BtConnection();
-                connection.getOutput().writeObject(new CardRequest(id));                
+                connection.getOutput().writeObject(new CardRequest(id));
                 return (CardPacket) connection.getInput().readObject();
             } catch (Exception e) {
                 Log.e(MainActivity.class.getName(),
