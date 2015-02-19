@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity implements
 
         folder = new File(Environment.getExternalStorageDirectory()
                 + "/BackTalk/");
-        new CardGetter().execute();
+        new CardGetter(1).execute();
     }
 
     @Override
@@ -70,24 +70,26 @@ public class MainActivity extends ActionBarActivity implements
 
     @Override
     public void onRecord() {
-
+        new CardGetter(card.getId() - 1).execute();
     }
 
     @Override
     public void onPlay() {
-        // TODO Auto-generated method stub
-
+        new CardGetter(card.getId() + 1).execute();
     }
 
     private class CardGetter extends AsyncTask<Void, Void, CardPacket> {
-
+        private int id;
         private BtConnection connection;
-
+        public CardGetter(int id) {
+            this.id = id;
+        }
+        
         @Override
         protected CardPacket doInBackground(Void... arg0) {
             try {
                 connection = new BtConnection();
-                connection.getOutput().writeObject(new CardRequest(3));                
+                connection.getOutput().writeObject(new CardRequest(id));                
                 return (CardPacket) connection.getInput().readObject();
             } catch (Exception e) {
                 Log.e(MainActivity.class.getName(),
@@ -113,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements
         // TODO Auto-generated method stub
         this.card = cardPacket;
         getFragmentManager().beginTransaction()
-                .add(R.id.container1, new CardFragment(card)).commit();
+                .replace(R.id.container1, new CardFragment(card)).commit();
 
     }
 
