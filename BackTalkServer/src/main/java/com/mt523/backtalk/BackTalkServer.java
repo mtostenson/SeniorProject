@@ -63,7 +63,7 @@ class BackTalkServer {
             serverSocket = new ServerSocket(PORT);
             System.out.printf("Server listening on port %d.\n", PORT);
             while (true) {
-                new ServerWorker(serverSocket.accept());
+                new ServerWorker(serverSocket.accept()).start();
             }
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
