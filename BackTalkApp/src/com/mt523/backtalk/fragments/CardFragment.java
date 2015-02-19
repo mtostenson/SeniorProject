@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mt523.backtalk.R;
-import com.mt523.backtalk.packets.BasePacket;
+import com.mt523.backtalk.packets.client.CardPacket;
 import com.mt523.backtalk.util.FontUtil;
 
 public class CardFragment extends Fragment {
 
-    BasePacket card;
+    CardPacket card;
 
-    public CardFragment(BasePacket basePacket) {
+    public CardFragment(CardPacket basePacket) {
         super();
         card = basePacket;
     }
@@ -27,8 +27,8 @@ public class CardFragment extends Fragment {
                 .inflate(R.layout.card_layout, container, false);
         TextView tv = (TextView) rootView.findViewById(R.id.display);
         tv.setTypeface(FontUtil.instance(getActivity().getApplicationContext())
-                .getMainFont());
-        tv.setText(card.getQ());
+                .getFont());
+        tv.setText(card.getQuestion());
         return rootView;
     }
 }

@@ -15,16 +15,17 @@ import android.view.MenuItem;
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
-import com.mt523.backtalk.packets.BasePacket;
+import com.mt523.backtalk.packets.client.CardPacket;
+import com.mt523.backtalk.packets.client.IBackTalkClient;
 import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
 
 public class MainActivity extends ActionBarActivity implements
-        RecorderControlFragment.RecordControlInterface {
+        RecorderControlFragment.RecordControlInterface, IBackTalkClient {
 
     private WavRecorder recorder;
     private File folder;
-    private Vector<BasePacket> cards;
+    private CardPacket card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class MainActivity extends ActionBarActivity implements
 
     @Override
     public void onRecord() {
-        
+
     }
 
     @Override
@@ -77,15 +78,15 @@ public class MainActivity extends ActionBarActivity implements
 
     }
 
-    private class CardGetter extends AsyncTask<Void, Void, BasePacket> {
+    private class CardGetter extends AsyncTask<Void, Void, CardPacket> {
 
         private BtConnection connection;
 
         @Override
-        protected BasePacket doInBackground(Void... arg0) {
+        protected CardPacket doInBackground(Void... arg0) {
             try {
                 connection = new BtConnection();
-                return (BasePacket) connection.getInput().readObject();
+                return (CardPacket) connection.getInput().readObject();
             } catch (Exception e) {
                 Log.e(MainActivity.class.getName(),
                         "Packet read error:" + e.getMessage());
@@ -94,14 +95,23 @@ public class MainActivity extends ActionBarActivity implements
         }
 
         @Override
-        protected void onPostExecute(BasePacket result) {
+        protected void onPostExecute(CardPacket result) {
             super.onPostExecute(result);
+            result.setClient(MainActivity.this);
+            result.handlePacket();
             if (connection != null) {
                 connection.close();
             }
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container1, new CardFragment(result)).commit();
         }
+
+    }
+
+    @Override
+    public void setCard(CardPacket cardPacket) {
+        // TODO Auto-generated method stub
+        this.card = cardPacket;
+        getFragmentManager().beginTransaction()
+                .add(R.id.container1, new CardFragment(card)).commit();
 
     }
 

@@ -1,5 +1,6 @@
 package com.mt523.backtalk;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -11,15 +12,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import com.mt523.backtalk.packets.CardPacket;
+import com.mt523.backtalk.packets.client.CardPacket;
+import com.mt523.backtalk.packets.client.ClientPacket;
+import com.mt523.backtalk.packets.server.IBackTalkServer;
+import com.mt523.backtalk.packets.server.ServerPacket;
 
-class Server {
+class BackTalkServer {
 
     // ServerSocket to open socket connections with clients
     private ServerSocket serverSocket;
-
-    // Socket connected to client
-    private Socket socket;
 
     // Port that server listens on
     private static final int PORT = 4242;
@@ -40,7 +41,7 @@ class Server {
     private final String dbAddr = "jdbc:mysql://backtalk.cri0r2kpn2sn.us-west-1.rds.amazonaws.com/"
             + "backtalk?user=admin&password=theH3r0ofCanton";
 
-    public Server() {
+    public BackTalkServer() {
 
         try {
             // Connect to database ---------------------------------------------
@@ -62,14 +63,7 @@ class Server {
             serverSocket = new ServerSocket(PORT);
             System.out.printf("Server listening on port %d.\n", PORT);
             while (true) {
-                socket = serverSocket.accept();
-                System.out.printf("Connected to %s.\n",
-                        socket.getRemoteSocketAddress());
-                ObjectOutputStream output = new ObjectOutputStream(
-                        socket.getOutputStream());
-                ObjectInputStream input = new ObjectInputStream(
-                        socket.getInputStream());
-                socket.close();
+                new ServerWorker(serverSocket.accept());
             }
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
@@ -78,7 +72,51 @@ class Server {
         }
     }
 
+    private class ServerWorker extends Thread implements IBackTalkServer {
+
+        private Socket socket;
+        ObjectInputStream input;
+        ObjectOutputStream output;
+        private ClientPacket clientPacket;
+        private ServerPacket serverPacket;        
+
+        public ServerWorker(Socket socket) {
+            this.socket = socket;
+            System.out.printf("Connected to %s.\n",
+                    socket.getRemoteSocketAddress());
+            try {
+                output = new ObjectOutputStream(
+                        socket.getOutputStream());
+                input = new ObjectInputStream(
+                        socket.getInputStream());
+                serverPacket = (ServerPacket)input.readObject();
+                serverPacket.setServer(this);
+                serverPacket.handlePacket();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void run() {
+
+            super.run();
+        }
+
+        @Override
+        public void serveImage(int id) {
+            try {
+                output.writeObject(deck.get(id-1));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        new Server();
+        new BackTalkServer();
     }
 }

@@ -1,6 +1,8 @@
-package com.mt523.backtalk.packets;
+package com.mt523.backtalk.packets.client;
 
-public class CardPacket implements IBackTalkPacket {
+import com.mt523.backtalk.packets.IBackTalkPacket;
+
+public class CardPacket extends ClientPacket {
 
     private int id;
     private String question;
@@ -16,9 +18,7 @@ public class CardPacket implements IBackTalkPacket {
 
     @Override
     public void handlePacket() {
-        System.out.println(question);
-        System.out.println(answer);
-        System.out.println(category);
+        client.setCard(this);
     }
 
     public int getId() {

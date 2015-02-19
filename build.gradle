@@ -6,5 +6,4 @@ project('BackTalkServer') {
 	dependencies {
 		compile project(':BackTalkPackets')
 	}
-}
-
+} 
