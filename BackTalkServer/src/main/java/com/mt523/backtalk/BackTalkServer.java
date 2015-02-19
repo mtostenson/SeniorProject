@@ -78,18 +78,21 @@ class BackTalkServer {
         ObjectInputStream input;
         ObjectOutputStream output;
         private ClientPacket clientPacket;
-        private ServerPacket serverPacket;        
+        private ServerPacket serverPacket;
 
         public ServerWorker(Socket socket) {
             this.socket = socket;
             System.out.printf("Connected to %s.\n",
                     socket.getRemoteSocketAddress());
+        }
+
+        @Override
+        public void run() {
+            super.run();
             try {
-                output = new ObjectOutputStream(
-                        socket.getOutputStream());
-                input = new ObjectInputStream(
-                        socket.getInputStream());
-                serverPacket = (ServerPacket)input.readObject();
+                output = new ObjectOutputStream(socket.getOutputStream());
+                input = new ObjectInputStream(socket.getInputStream());
+                serverPacket = (ServerPacket) input.readObject();
                 serverPacket.setServer(this);
                 serverPacket.handlePacket();
                 socket.close();
@@ -101,15 +104,9 @@ class BackTalkServer {
         }
 
         @Override
-        public void run() {
-
-            super.run();
-        }
-
-        @Override
         public void serveImage(int id) {
             try {
-                output.writeObject(deck.get(id-1));
+                output.writeObject(deck.get(id - 1));
             } catch (IOException e) {
                 e.printStackTrace();
             }

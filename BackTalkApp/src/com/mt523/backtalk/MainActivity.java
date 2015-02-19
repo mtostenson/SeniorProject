@@ -17,6 +17,7 @@ import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.CardPacket;
 import com.mt523.backtalk.packets.client.IBackTalkClient;
+import com.mt523.backtalk.packets.server.CardRequest;
 import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
 
@@ -86,6 +87,7 @@ public class MainActivity extends ActionBarActivity implements
         protected CardPacket doInBackground(Void... arg0) {
             try {
                 connection = new BtConnection();
+                connection.getOutput().writeObject(new CardRequest(3));                
                 return (CardPacket) connection.getInput().readObject();
             } catch (Exception e) {
                 Log.e(MainActivity.class.getName(),
