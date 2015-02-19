@@ -9,5 +9,9 @@ public abstract class ServerPacket implements IBackTalkPacket {
     public void setServer(IBackTalkServer server) {
         this.server = server;
     }
+    
+    public interface IBackTalkServer {
+        public void serveImage(int id);
+    }
 
 }

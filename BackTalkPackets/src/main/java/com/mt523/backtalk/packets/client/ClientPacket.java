@@ -5,9 +5,14 @@ import com.mt523.backtalk.packets.IBackTalkPacket;
 public abstract class ClientPacket implements IBackTalkPacket {
 
     IBackTalkClient client;
-    
+
     public void setClient(IBackTalkClient client) {
         this.client = client;
     }
 
+    public interface IBackTalkClient {
+
+        public void setCard(CardPacket cardPacket);
+
+    }
 }

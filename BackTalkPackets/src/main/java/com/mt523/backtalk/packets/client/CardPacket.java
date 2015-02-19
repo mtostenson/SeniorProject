@@ -1,6 +1,5 @@
 package com.mt523.backtalk.packets.client;
 
-import com.mt523.backtalk.packets.IBackTalkPacket;
 
 public class CardPacket extends ClientPacket {
 

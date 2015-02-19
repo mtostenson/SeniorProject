@@ -3,7 +3,6 @@ package com.mt523.backtalk;
 import java.io.File;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,14 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.CardPacket;
-import com.mt523.backtalk.packets.client.IBackTalkClient;
+import com.mt523.backtalk.packets.client.ClientPacket.IBackTalkClient;
 import com.mt523.backtalk.packets.server.CardRequest;
 import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
@@ -30,7 +27,7 @@ public class MainActivity extends ActionBarActivity implements
     private WavRecorder recorder;
     private File folder;
     private CardPacket card;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +117,7 @@ public class MainActivity extends ActionBarActivity implements
         // TODO Auto-generated method stub
         this.card = cardPacket;
         getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.container1, new CardFragment(card)).commit();
 
     }

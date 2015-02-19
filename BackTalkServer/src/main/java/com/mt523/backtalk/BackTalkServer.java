@@ -14,8 +14,8 @@ import java.util.Vector;
 
 import com.mt523.backtalk.packets.client.CardPacket;
 import com.mt523.backtalk.packets.client.ClientPacket;
-import com.mt523.backtalk.packets.server.IBackTalkServer;
 import com.mt523.backtalk.packets.server.ServerPacket;
+import com.mt523.backtalk.packets.server.ServerPacket.IBackTalkServer;
 
 class BackTalkServer {
 
