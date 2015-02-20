@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import com.mt523.backtalk.packets.client.CardPacket;
 import com.mt523.backtalk.packets.client.ClientPacket;
+import com.mt523.backtalk.packets.client.NothingPacket;
 import com.mt523.backtalk.packets.server.ServerPacket;
 import com.mt523.backtalk.packets.server.ServerPacket.IBackTalkServer;
 
@@ -106,6 +107,12 @@ class BackTalkServer {
         public void serveImage(int id) {
             try {
                 output.writeObject(deck.get(id - 1));
+            } catch (IndexOutOfBoundsException e) {
+                try {
+                    output.writeObject(new NothingPacket());
+                } catch (IOException ee) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
