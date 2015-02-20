@@ -20,7 +20,9 @@ import com.mt523.backtalk.fragments.CardFragment.CardInterface;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment.RecordControlInterface;
+import com.mt523.backtalk.packets.IBackTalkPacket;
 import com.mt523.backtalk.packets.client.CardPacket;
+import com.mt523.backtalk.packets.client.ClientPacket;
 import com.mt523.backtalk.packets.client.ClientPacket.IBackTalkClient;
 import com.mt523.backtalk.packets.server.CardRequest;
 import com.mt523.backtalk.util.BtConnection;
@@ -44,7 +46,7 @@ public class MainActivity extends ActionBarActivity implements
 
         folder = new File(Environment.getExternalStorageDirectory()
                 + "/BackTalk/");
-        new CardGetter(1).execute();
+        new ServerTransaction(new CardRequest(1)).execute();
     }
 
     @Override
@@ -114,20 +116,21 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    private class CardGetter extends AsyncTask<Void, Void, CardPacket> {
-        private int id;
+    private class ServerTransaction extends AsyncTask<Void, Void, ClientPacket> {
+
+        private IBackTalkPacket outPacket;
         private BtConnection connection;
 
-        public CardGetter(int id) {
-            this.id = id;
+        public ServerTransaction(IBackTalkPacket outPacket) {
+            this.outPacket = outPacket;
         }
 
         @Override
-        protected CardPacket doInBackground(Void... arg0) {
+        protected ClientPacket doInBackground(Void... arg0) {
             try {
                 connection = new BtConnection();
-                connection.getOutput().writeObject(new CardRequest(id));
-                return (CardPacket) connection.getInput().readObject();
+                connection.getOutput().writeObject(outPacket);
+                return (ClientPacket) connection.getInput().readObject();
             } catch (Exception e) {
                 Log.e(MainActivity.class.getName(),
                         "Packet read error:" + e.getMessage());
@@ -136,7 +139,7 @@ public class MainActivity extends ActionBarActivity implements
         }
 
         @Override
-        protected void onPostExecute(CardPacket result) {
+        protected void onPostExecute(ClientPacket result) {
             super.onPostExecute(result);
             result.setClient(MainActivity.this);
             result.handlePacket();
@@ -159,12 +162,12 @@ public class MainActivity extends ActionBarActivity implements
 
     @Override
     public void nextCard() {
-        new CardGetter(card.getId() + 1).execute();
+        new ServerTransaction(new CardRequest(card.getId() + 1)).execute();
     }
 
     @Override
     public void prevCard() {
-        new CardGetter(card.getId() - 1).execute();
+        new ServerTransaction(new CardRequest(card.getId() - 1)).execute();
     }
 
 }
