@@ -4,7 +4,7 @@ import com.mt523.backtalk.packets.IBackTalkPacket;
 
 public abstract class ClientPacket implements IBackTalkPacket {
 
-    IBackTalkClient client;
+    transient IBackTalkClient client;
 
     public void setClient(IBackTalkClient client) {
         this.client = client;
