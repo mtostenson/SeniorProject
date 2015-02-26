@@ -160,9 +160,10 @@ public class MainActivity extends ActionBarActivity implements
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.container1,
-                            new CardFragment(deck.get(++index)));
+                            new CardFragment(deck.get(++index))).commit();
         } catch (IndexOutOfBoundsException e) {
             Log.d(MainActivity.class.getName(), "Index out of bounds");
+            index--;
         }
     }
 
@@ -173,9 +174,10 @@ public class MainActivity extends ActionBarActivity implements
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.container1,
-                            new CardFragment(deck.get(++index))).commit();
+                            new CardFragment(deck.get(--index))).commit();
         } catch (IndexOutOfBoundsException e) {
             Log.d(MainActivity.class.getName(), "Index out of bounds");
+            index++;
         }
     }
 
