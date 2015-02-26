@@ -12,9 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import com.mt523.backtalk.packets.client.CardPacket;
-import com.mt523.backtalk.packets.client.ClientPacket;
+import com.mt523.backtalk.packets.client.Card;
+import com.mt523.backtalk.packets.client.DeckPacket;
 import com.mt523.backtalk.packets.client.NothingPacket;
+import com.mt523.backtalk.packets.server.CardRequest.CardTier;
 import com.mt523.backtalk.packets.server.ServerPacket;
 import com.mt523.backtalk.packets.server.ServerPacket.IBackTalkServer;
 
@@ -36,7 +37,9 @@ class BackTalkServer {
     private String query;
 
     // Set of cards to be served to clients
-    private Vector<CardPacket> deck = new Vector<>();
+    private Vector<Card> defaultDeck;
+    private Vector<Card> paid1;
+    private Vector<Card> paid2;
 
     // Address of the database which holds the content
     private final String dbAddr = "jdbc:mysql://backtalk.cri0r2kpn2sn.us-west-1.rds.amazonaws.com/"
@@ -50,14 +53,16 @@ class BackTalkServer {
             connection = DriverManager.getConnection(dbAddr);
             statement = connection.createStatement();
 
-            // Populate Deck ---------------------------------------------------
-            query = "SELECT * FROM cards";
+            // Populate Default Deck -------------------------------------------
+            defaultDeck = new Vector<>();
+            query = "SELECT * FROM cards";            
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                deck.add(new CardPacket(resultSet.getInt("id"), resultSet
-                        .getString("question"), resultSet.getString("answer"),
-                        resultSet.getString("category")));
-                System.out.println(deck.lastElement().toString());
+                defaultDeck.add(new Card(resultSet.getInt("id"),
+                        resultSet.getString("question"), resultSet
+                                .getString("answer"), resultSet
+                                .getString("category")));
+                System.out.println(defaultDeck.lastElement().toString());
             }
 
             // Initialize server -----------------------------------------------
@@ -104,15 +109,23 @@ class BackTalkServer {
         }
 
         @Override
-        public void serveImage(int id) {
+        public void serveCards(CardTier tier) {
+            Vector<Card> deck = null;
+            switch (tier) {
+            case DEFAULT:
+                deck = defaultDeck;
+                break;
+            case PAID1:
+                deck = paid1;
+                break;
+            case PAID2:
+                deck = paid2;
+                break;
+            default:
+                System.err.println("This will literally never happen.");
+            }
             try {
-                output.writeObject(deck.get(id - 1));
-            } catch (IndexOutOfBoundsException e) {
-                try {
-                    output.writeObject(new NothingPacket());
-                } catch (IOException ee) {
-                    e.printStackTrace();
-                }
+                output.writeObject(new DeckPacket(deck));
             } catch (IOException e) {
                 e.printStackTrace();
             }

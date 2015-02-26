@@ -2,15 +2,17 @@ package com.mt523.backtalk.packets.server;
 
 public class CardRequest extends ServerPacket {
 
-    private int id;
+    public enum CardTier { DEFAULT, PAID1, PAID2 }
     
-    public CardRequest(int id) {
-        this.id = id;
+    private CardTier tier;    
+    
+    public CardRequest(CardTier tier) {
+        this.tier = tier;
     }
     
     @Override
     public void handlePacket() {
-        server.serveImage(id);
+        server.serveCards(tier);
     }
 
 }

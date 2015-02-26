@@ -1,23 +1,19 @@
 package com.mt523.backtalk.packets.client;
 
+import java.io.Serializable;
 
-public class CardPacket extends ClientPacket {
+public class Card implements Serializable {
 
     private int id;
     private String question;
     private String answer;
     private String category;
 
-    public CardPacket(int id, String question, String answer, String category) {
+    public Card(int id, String question, String answer, String category) {
         this.id = id;
         this.question = question;
         this.answer = answer;
         this.category = category;
-    }
-
-    @Override
-    public void handlePacket() {
-        client.setCard(this);
     }
 
     public int getId() {

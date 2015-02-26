@@ -1,6 +1,8 @@
+
 package com.mt523.backtalk.packets.server;
 
 import com.mt523.backtalk.packets.IBackTalkPacket;
+import com.mt523.backtalk.packets.server.CardRequest.CardTier;
 
 public abstract class ServerPacket implements IBackTalkPacket {
 
@@ -11,7 +13,7 @@ public abstract class ServerPacket implements IBackTalkPacket {
     }
     
     public interface IBackTalkServer {
-        public void serveImage(int id);
+        public void serveCards(CardTier tier);
     }
 
 }               

@@ -1,5 +1,7 @@
 package com.mt523.backtalk.packets.client;
 
+import java.util.Vector;
+
 import com.mt523.backtalk.packets.IBackTalkPacket;
 
 public abstract class ClientPacket implements IBackTalkPacket {
@@ -12,7 +14,7 @@ public abstract class ClientPacket implements IBackTalkPacket {
 
     public interface IBackTalkClient {
 
-        public void setCard(CardPacket cardPacket);
+        public void setDeck(Vector<Card> deck);
 
     }
 }

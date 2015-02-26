@@ -10,20 +10,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.mt523.backtalk.R;
-import com.mt523.backtalk.packets.client.CardPacket;
+import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.FontUtil;
 
 public class CardFragment extends Fragment {
 
     private CardInterface activity;
-    private CardPacket card;
+    private Card card;
     private TextView tv;
     private Button btnPrev;
     private Button btnNext;
 
-    public CardFragment(CardPacket basePacket) {
+    public CardFragment(Card card) {
         super();
-        card = basePacket;
+        this.card = card;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.mt523.backtalk;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Vector;
 
 import android.app.FragmentTransaction;
 import android.media.MediaPlayer;
@@ -20,11 +21,12 @@ import com.mt523.backtalk.fragments.CardFragment.CardInterface;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment.RecordControlInterface;
-import com.mt523.backtalk.packets.IBackTalkPacket;
-import com.mt523.backtalk.packets.client.CardPacket;
+import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.packets.client.ClientPacket;
 import com.mt523.backtalk.packets.client.ClientPacket.IBackTalkClient;
 import com.mt523.backtalk.packets.server.CardRequest;
+import com.mt523.backtalk.packets.server.CardRequest.CardTier;
+import com.mt523.backtalk.packets.server.ServerPacket;
 import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
 
@@ -33,7 +35,8 @@ public class MainActivity extends ActionBarActivity implements
 
     private WavRecorder recorder;
     private File folder;
-    private CardPacket card;
+    private Vector<Card> deck;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements
 
         folder = new File(Environment.getExternalStorageDirectory()
                 + "/BackTalk/");
-        new ServerTransaction(new CardRequest(1)).execute();
+        new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();
     }
 
     @Override
@@ -118,10 +121,10 @@ public class MainActivity extends ActionBarActivity implements
 
     private class ServerTransaction extends AsyncTask<Void, Void, ClientPacket> {
 
-        private IBackTalkPacket outPacket;
+        private ServerPacket outPacket;
         private BtConnection connection;
 
-        public ServerTransaction(IBackTalkPacket outPacket) {
+        public ServerTransaction(ServerPacket outPacket) {
             this.outPacket = outPacket;
         }
 
@@ -151,23 +154,38 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void setCard(CardPacket cardPacket) {
-        // TODO Auto-generated method stub
-        this.card = cardPacket;
-        getFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.container1, new CardFragment(card)).commit();
-
-    }
-
-    @Override
     public void nextCard() {
-        new ServerTransaction(new CardRequest(card.getId() + 1)).execute();
+        try {
+            getFragmentManager()
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .replace(R.id.container1,
+                            new CardFragment(deck.get(++index)));
+        } catch (IndexOutOfBoundsException e) {
+            Log.d(MainActivity.class.getName(), "Index out of bounds");
+        }
     }
 
     @Override
     public void prevCard() {
-        new ServerTransaction(new CardRequest(card.getId() - 1)).execute();
+        try {
+            getFragmentManager()
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .replace(R.id.container1,
+                            new CardFragment(deck.get(++index)));
+        } catch (IndexOutOfBoundsException e) {
+            Log.d(MainActivity.class.getName(), "Index out of bounds");
+        }
+    }
+
+    @Override
+    public void setDeck(Vector<Card> deck) {
+        this.deck = deck;
+        index = 0;
+        getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .add(R.id.container1, new CardFragment(deck.get(0)));
     }
 
 }
