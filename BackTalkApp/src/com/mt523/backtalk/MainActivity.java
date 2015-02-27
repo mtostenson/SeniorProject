@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Vector;
 
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +30,7 @@ import com.mt523.backtalk.packets.client.ClientPacket.IBackTalkClient;
 import com.mt523.backtalk.packets.server.CardRequest;
 import com.mt523.backtalk.packets.server.CardRequest.CardTier;
 import com.mt523.backtalk.packets.server.ServerPacket;
+import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
 
@@ -36,7 +40,9 @@ public class MainActivity extends ActionBarActivity implements
     private WavRecorder recorder;
     private File folder;
     private Vector<Card> deck;
-    private int index;
+    private int index = -1;
+    private SQLiteDatabase database;
+    private BackTalkDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,14 @@ public class MainActivity extends ActionBarActivity implements
 
         folder = new File(Environment.getExternalStorageDirectory()
                 + "/BackTalk/");
-        new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();
+        dbHelper = new BackTalkDbHelper(MainActivity.this);
+        database = dbHelper.getWritableDatabase();
+        deck = getDeck();
+        if (deck.size() == 0) {
+            new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();
+        } else {
+            getDeckFromDb();
+        }
     }
 
     @Override
@@ -150,44 +163,60 @@ public class MainActivity extends ActionBarActivity implements
                 connection.close();
             }
         }
-
     }
-
+    
     @Override
-    public void nextCard() {
+    public void goToCard(int index) {
         try {
             getFragmentManager()
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.container1,
-                            new CardFragment(deck.get(++index))).commit();
+                            new CardFragment(deck.get(index))).commit();
+                    this.index = index;
         } catch (IndexOutOfBoundsException e) {
             Log.d(MainActivity.class.getName(), "Index out of bounds");
-            index--;
-        }
+        }        
     }
-
+    
     @Override
-    public void prevCard() {
-        try {
-            getFragmentManager()
-                    .beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .replace(R.id.container1,
-                            new CardFragment(deck.get(--index))).commit();
-        } catch (IndexOutOfBoundsException e) {
-            Log.d(MainActivity.class.getName(), "Index out of bounds");
-            index++;
-        }
+    public int getIndex() {
+        return index;
     }
 
     @Override
     public void setDeck(Vector<Card> deck) {
-        this.deck = deck;
-        index = 0;
-        getFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .add(R.id.container1, new CardFragment(deck.get(0))).commit();
+        for (Card card : deck) {
+            ContentValues values = new ContentValues();
+            values.put(BackTalkDbHelper.COLUMN_ID, card.getId());
+            values.put(BackTalkDbHelper.COLUMN_QUESTION, card.getQuestion());
+            values.put(BackTalkDbHelper.COLUMN_ANSWER, card.getAnswer());
+            values.put(BackTalkDbHelper.COLUMN_CATEGORY, card.getCategory());
+            database.insert(BackTalkDbHelper.TABLE_CARDS, null, values);
+            getDeckFromDb();
+        }
     }
+
+    public Vector<Card> getDeck() {
+        Vector<Card> deck = new Vector<Card>();
+        String query = "SELECT * FROM cards;";
+        Cursor cursor = database.rawQuery(query, new String[] {});
+        while (cursor.moveToNext()) {
+            deck.add(new Card(cursor.getInt(cursor
+                    .getColumnIndex(BackTalkDbHelper.COLUMN_ID)), cursor
+                    .getString(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_QUESTION)),
+                    cursor.getString(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_ANSWER)),
+                    cursor.getString(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))));
+        }
+        return deck;
+    }
+
+    private void getDeckFromDb() {
+        deck = getDeck();
+        goToCard(0);
+    }      
 
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mt523.backtalk.MainActivity;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.FontUtil;
@@ -37,25 +38,26 @@ public class CardFragment extends Fragment {
                 .getFont());
         tv.setText(card.getQuestion());
         btnPrev = (Button) rootView.findViewById(R.id.btnPrev);
-        btnPrev.setOnClickListener(new OnClickListener() {            
+        btnPrev.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.prevCard();
+                activity.goToCard(activity.getIndex() - 1);
             }
         });
         btnNext = (Button) rootView.findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.nextCard();                
-            }            
+                activity.goToCard(activity.getIndex() + 1);
+            }
         });
         return rootView;
     }
 
     public interface CardInterface {
-        public void nextCard();
-
-        public void prevCard();
+       
+        public void goToCard(int index);
+        
+        public int getIndex();
     }
 }

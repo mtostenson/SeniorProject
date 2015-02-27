@@ -55,13 +55,12 @@ class BackTalkServer {
 
             // Populate Default Deck -------------------------------------------
             defaultDeck = new Vector<>();
-            query = "SELECT * FROM cards";            
+            query = "SELECT * FROM cards";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                defaultDeck.add(new Card(resultSet.getInt("id"),
-                        resultSet.getString("question"), resultSet
-                                .getString("answer"), resultSet
-                                .getString("category")));
+                defaultDeck.add(new Card(resultSet.getInt("id"), resultSet
+                        .getString("question"), resultSet.getString("answer"),
+                        resultSet.getString("category")));
                 System.out.println(defaultDeck.lastElement().toString());
             }
 
