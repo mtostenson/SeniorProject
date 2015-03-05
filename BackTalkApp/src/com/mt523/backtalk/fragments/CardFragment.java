@@ -1,5 +1,7 @@
 package com.mt523.backtalk.fragments;
 
+import java.util.Locale;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,13 +10,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mt523.backtalk.MainActivity;
 import com.mt523.backtalk.R;
+import com.mt523.backtalk.fragments.GuessFragment.GuessInterface;
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.FontUtil;
 
-public class CardFragment extends Fragment {
+public class CardFragment extends Fragment implements GuessInterface {
 
     private CardInterface activity;
     private Card card;
@@ -54,10 +58,22 @@ public class CardFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void guess(String guess) {
+        Toast.makeText(
+                getActivity().getApplicationContext(),
+                normalize(guess).equals(normalize(card.getAnswer())) ? "Match"
+                        : "No match", Toast.LENGTH_SHORT).show();
+    }
+
+    private String normalize(String s) {
+        return s.replaceAll("\\W", "").toUpperCase(Locale.ENGLISH);
+    }
+
     public interface CardInterface {
-       
+
         public void goToCard(int index);
-        
+
         public int getIndex();
     }
 }

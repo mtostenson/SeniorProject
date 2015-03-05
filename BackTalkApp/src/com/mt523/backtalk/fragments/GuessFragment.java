@@ -16,6 +16,7 @@ public class GuessFragment extends Fragment {
 
     private Button btnGuess;
     private EditText input;
+    private GuessInterface guessInterface;
 
     public GuessFragment() {
     }
@@ -30,11 +31,20 @@ public class GuessFragment extends Fragment {
         btnGuess.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                guessInterface.guess(input.getText().toString());
                 getFragmentManager().popBackStack();
             }
         });
-        input.requestFocus();        
+        input.requestFocus();
         return rootView;
+    }
+
+    public void setGuessInterface(GuessInterface guessInterface) {
+        this.guessInterface = guessInterface;
+    }
+
+    public interface GuessInterface {
+        public void guess(String guess);
     }
 
 }

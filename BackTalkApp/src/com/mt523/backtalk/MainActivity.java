@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.CardFragment.CardInterface;
 import com.mt523.backtalk.fragments.GuessFragment;
+import com.mt523.backtalk.fragments.ProgressFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment.RecordControlInterface;
 import com.mt523.backtalk.packets.client.Card;
@@ -37,6 +38,7 @@ import com.mt523.backtalk.util.WavRecorder;
 public class MainActivity extends ActionBarActivity implements
         RecordControlInterface, CardInterface, IBackTalkClient {
 
+    private static final String LOGTAG = MainActivity.class.getName();
     private WavRecorder recorder;
     private File folder;
     private Vector<Card> deck;
@@ -44,14 +46,20 @@ public class MainActivity extends ActionBarActivity implements
     private SQLiteDatabase database;
     private BackTalkDbHelper dbHelper;
 
+    // Fragments
+    CardFragment cardFragment;
+    RecorderControlFragment recorderControlFragment;
+    GuessFragment guessFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        recorderControlFragment = new RecorderControlFragment();
         getFragmentManager().beginTransaction()
-                .add(R.id.container2, new RecorderControlFragment()).commit();
+                .add(R.id.container2, recorderControlFragment).commit();
 
         folder = new File(Environment.getExternalStorageDirectory()
                 + "/BackTalk/");
@@ -59,8 +67,10 @@ public class MainActivity extends ActionBarActivity implements
         database = dbHelper.getWritableDatabase();
         deck = getDeck();
         if (deck.size() == 0) {
+            Log.d(LOGTAG, "Pulling content from SERVER database.");
             new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();
         } else {
+            Log.d(LOGTAG, "Pulling content from CLIENT database.");
             getDeckFromDb();
         }
     }
@@ -86,8 +96,10 @@ public class MainActivity extends ActionBarActivity implements
 
     @Override
     public void onGuess() {
+        guessFragment = new GuessFragment();
+        guessFragment.setGuessInterface(cardFragment);
         getFragmentManager().beginTransaction()
-                .replace(R.id.container2, new GuessFragment())
+                .replace(R.id.container2, guessFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(null).commit();
     }
@@ -102,12 +114,16 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onStopRecord() {
         recorder.stop();
+        ProgressFragment progressFragment = new ProgressFragment();
+        recorder.SetReverseProgressUpdater(progressFragment);
+        getFragmentManager().beginTransaction().addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.container2, progressFragment).commit();
         try {
             recorder.reverse();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        recorder.release();
     }
 
     @Override
@@ -164,21 +180,20 @@ public class MainActivity extends ActionBarActivity implements
             }
         }
     }
-    
+
     @Override
     public void goToCard(int index) {
         try {
-            getFragmentManager()
-                    .beginTransaction()
+            cardFragment = new CardFragment(deck.get(index));
+            getFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .replace(R.id.container1,
-                            new CardFragment(deck.get(index))).commit();
-                    this.index = index;
+                    .replace(R.id.container1, cardFragment).commit();
+            this.index = index;
         } catch (IndexOutOfBoundsException e) {
             Log.d(MainActivity.class.getName(), "Index out of bounds");
-        }        
+        }
     }
-    
+
     @Override
     public int getIndex() {
         return index;
@@ -217,6 +232,6 @@ public class MainActivity extends ActionBarActivity implements
     private void getDeckFromDb() {
         deck = getDeck();
         goToCard(0);
-    }      
+    }
 
 }
