@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity implements
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         recorderControlFragment = new RecorderControlFragment();
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.container2, recorderControlFragment).commit();
 
         folder = new File(Environment.getExternalStorageDirectory()
@@ -98,7 +98,7 @@ public class MainActivity extends ActionBarActivity implements
     public void onGuess() {
         guessFragment = new GuessFragment();
         guessFragment.setGuessInterface(cardFragment);
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container2, guessFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(null).commit();
@@ -184,8 +184,8 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void goToCard(int index) {
         try {
-            cardFragment = new CardFragment(deck.get(index));
-            getFragmentManager().beginTransaction()
+            // cardFragment = new CardFragment(deck.get(index));
+            getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.container1, cardFragment).commit();
             this.index = index;

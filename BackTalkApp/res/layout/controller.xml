@@ -3,30 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:padding="8dp" >
 
     <Button
         android:id="@+id/btnRecord"
         style="@style/button_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".3"
+        android:background="@drawable/button1"
         android:text="RECORD" />
 
     <Button
         android:id="@+id/btnGuess"
         style="@style/button_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:text="GUESS" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".4"
+        android:background="@drawable/button2"
+        android:text="\?"
+        android:textSize="48sp" />
 
     <Button
         android:id="@+id/btnPlay"
         style="@style/button_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".3"
+        android:background="@drawable/button3"
         android:text="LISTEN" />
 
 </LinearLayout>

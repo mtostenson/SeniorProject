@@ -3,26 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/btnPrev"
-        style="@style/button_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/button"
-        android:text="&lt;" />
-
-    <Button
-        android:id="@+id/btnNext"
-        style="@style/button_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/button"
-        android:text="&gt;" />
-
     <TextView
         android:id="@+id/display"
         android:layout_width="wrap_content"
@@ -30,7 +10,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white" />
+        style="@style/ShadowText"
+        android:textColor="@android:color/white"
+        android:textSize="48sp" />
 
 </RelativeLayout>
