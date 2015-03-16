@@ -232,7 +232,7 @@ public class DrawerActivity extends ActionBarActivity implements
         recorder.SetReverseProgressUpdater(progressFragment);
         getFragmentManager().beginTransaction().addToBackStack(null)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.container2, progressFragment).commit();
+                .replace(R.id.bottom, progressFragment).commit();
         try {
             recorder.reverse();
         } catch (IOException e) {
@@ -246,6 +246,7 @@ public class DrawerActivity extends ActionBarActivity implements
         try {
             File folder = new File(Environment.getExternalStorageDirectory()
                     + "/BackTalk/");
+            folder.mkdir();
             FileInputStream fis = new FileInputStream(folder.getAbsolutePath()
                     + "/EXT_TEST_REVERSE.wav");
             player.setDataSource(fis.getFD());

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.mt523.backtalk.R;
+import com.mt523.backtalk.util.FontUtil;
 
 public class GuessFragment extends Fragment {
 
@@ -31,6 +32,8 @@ public class GuessFragment extends Fragment {
         imm = (InputMethodManager) getActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         btnGuess = (Button) rootView.findViewById(R.id.btnSubmitGuess);
+        btnGuess.setTypeface(FontUtil.instance(getActivity().getBaseContext())
+                .getFont());
         input = (EditText) rootView.findViewById(R.id.input);
         btnGuess.setOnClickListener(new OnClickListener() {
             @Override

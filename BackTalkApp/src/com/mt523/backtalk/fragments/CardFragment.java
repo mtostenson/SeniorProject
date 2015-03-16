@@ -40,7 +40,7 @@ public class CardFragment extends Fragment implements GuessInterface {
         tv = (TextView) rootView.findViewById(R.id.display);
         tv.setTypeface(FontUtil.instance(getActivity().getApplicationContext())
                 .getFont());
-        tv.setText(card.getQuestion());
+        tv.setText("\"" + card.getQuestion() + "\"");
         return rootView;
     }
 
