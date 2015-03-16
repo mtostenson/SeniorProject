@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.CardFragment.CardInterface;

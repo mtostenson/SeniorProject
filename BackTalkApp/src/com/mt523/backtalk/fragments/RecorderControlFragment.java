@@ -18,9 +18,9 @@ public class RecorderControlFragment extends Fragment {
     private RecordControlInterface recordControlInterface;
 
     // GUI
-    Button bRecord;
-    Button bGuess;
-    Button bPlay;
+    public Button bRecord;
+    public Button bGuess;
+    public Button bPlay;
 
     public RecorderControlFragment() {
     }

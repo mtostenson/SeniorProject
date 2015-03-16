@@ -8,6 +8,7 @@ import java.util.Vector;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
@@ -44,7 +46,8 @@ import com.mt523.backtalk.util.WavRecorder;
 public class DrawerActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         RecorderControlFragment.RecordControlInterface,
-        CardFragment.CardInterface, ClientPacket.IBackTalkClient {
+        CardFragment.CardInterface, ClientPacket.IBackTalkClient,
+        MediaPlayer.OnCompletionListener {
 
     // My fragments
     private RecorderControlFragment controlFragment;
@@ -52,6 +55,8 @@ public class DrawerActivity extends ActionBarActivity implements
     private GuessFragment guessFragment;
 
     private WavRecorder recorder;
+    private MediaPlayer player;
+    private File folder;
     private BackTalkDbHelper dbHelper;
     private SQLiteDatabase database;
     private Vector<Card> deck;
@@ -109,6 +114,15 @@ public class DrawerActivity extends ActionBarActivity implements
         controlFragment = new RecorderControlFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.bottom, controlFragment).commit();
+
+        // Initialize playerr
+        player = new MediaPlayer();
+        player.setOnCompletionListener(this);
+        folder = new File(Environment.getExternalStorageDirectory()
+                + "/BackTalk/");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
 
     }
 
@@ -242,26 +256,25 @@ public class DrawerActivity extends ActionBarActivity implements
 
     @Override
     public void onPlay() {
-        MediaPlayer player = new MediaPlayer();
-        try {
-            File folder = new File(Environment.getExternalStorageDirectory()
-                    + "/BackTalk/");
-            folder.mkdir();
-            FileInputStream fis = new FileInputStream(folder.getAbsolutePath()
-                    + "/EXT_TEST_REVERSE.wav");
-            player.setDataSource(fis.getFD());
-            player.prepare();
-            player.start();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!player.isPlaying()) {
+            try {
+                player.reset();
+                FileInputStream fis = new FileInputStream(
+                        folder.getAbsolutePath() + "/EXT_TEST_REVERSE.wav");
+                player.setDataSource(fis.getFD());
+                player.prepare();
+                controlFragment.bPlay.setEnabled(false);
+                player.start();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     @Override
@@ -342,6 +355,11 @@ public class DrawerActivity extends ActionBarActivity implements
     private void getDeckFromDb() {
         deck = getDeck();
         goToCard(0);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        controlFragment.bPlay.setEnabled(true);
     }
 
 }
