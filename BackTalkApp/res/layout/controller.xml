@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="128dp"
+    android:divider="@android:color/transparent"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="8dp" >
+    android:showDividers="middle" >
 
     <Button
         android:id="@+id/btnRecord"
@@ -24,7 +25,7 @@
         android:background="@drawable/button2"
         android:text="\?"
         android:textSize="48sp" />
-
+    
     <Button
         android:id="@+id/btnPlay"
         style="@style/button_text"
@@ -32,6 +33,6 @@
         android:layout_height="match_parent"
         android:layout_weight=".3"
         android:background="@drawable/button3"
-        android:text="LISTEN" />
+        android:text="PLAY" />
 
 </LinearLayout>

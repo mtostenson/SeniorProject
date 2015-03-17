@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.fragments.GuessFragment.GuessInterface;
@@ -52,10 +53,10 @@ public class CardFragment extends Fragment implements GuessInterface {
 
     @Override
     public void guess(String guess) {
-        // Toast.makeText(
-        // getActivity().getApplicationContext(),
-        // normalize(guess).equals(normalize(card.getAnswer())) ? "Match"
-        // : "No match", Toast.LENGTH_SHORT).show();
+         Toast.makeText(
+         getActivity().getApplicationContext(),
+         normalize(guess).equals(normalize(card.getAnswer())) ? "Match"
+         : "No match", Toast.LENGTH_SHORT).show();
     }
 
     private String normalize(String s) {

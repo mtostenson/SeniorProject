@@ -54,7 +54,7 @@ public class GuessFragment extends Fragment {
     public interface GuessInterface {
         public void guess(String guess);
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
