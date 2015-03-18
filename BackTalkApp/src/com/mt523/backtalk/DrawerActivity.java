@@ -115,7 +115,7 @@ public class DrawerActivity extends ActionBarActivity implements
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.bottom, controlFragment).commit();
 
-        // Initialize playerr
+        // Initialize player
         player = new MediaPlayer();
         player.setOnCompletionListener(this);
         folder = new File(Environment.getExternalStorageDirectory()

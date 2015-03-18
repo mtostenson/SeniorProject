@@ -1,23 +1,18 @@
 package com.mt523.backtalk.fragments;
 
-import com.mt523.backtalk.R;
-import com.mt523.backtalk.R.drawable;
-import com.mt523.backtalk.R.id;
-import com.mt523.backtalk.R.layout;
-import com.mt523.backtalk.R.menu;
-import com.mt523.backtalk.R.string;
-
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +23,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.mt523.backtalk.DrawerActivity;
+import com.mt523.backtalk.R;
+import com.mt523.backtalk.util.BackTalkDbHelper;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -67,6 +66,11 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private SQLiteDatabase database;
+    private BackTalkDbHelper dbHelper;
+
+    private String[] categories;
+
     public NavigationDrawerFragment() {
     }
 
@@ -80,6 +84,18 @@ public class NavigationDrawerFragment extends Fragment {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+
+        // Set up the categories
+        dbHelper = new BackTalkDbHelper(getActivity().getBaseContext());
+        database = dbHelper.getReadableDatabase();
+        String query = "SELECT DISTINCT category FROM cards;";
+        Cursor cursor = database.rawQuery(query, new String[] {});
+        categories = new String[cursor.getCount()];
+        while (cursor.moveToNext()) {
+            categories[cursor.getPosition()] = cursor.getString(cursor
+                    .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY));
+        }
+        database.close();
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState
@@ -112,13 +128,11 @@ public class NavigationDrawerFragment extends Fragment {
                         selectItem(position);
                     }
                 });
+
         mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
                 .getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1, new String[] {
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3), }));
+                android.R.id.text1, categories));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -289,6 +303,11 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // Set the list of categories for the drawer
+    public void setCategories(String[] categories) {
+        this.categories = categories;
     }
 
     /**

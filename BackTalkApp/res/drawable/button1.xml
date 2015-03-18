@@ -29,8 +29,10 @@
           android:endColor="@color/orange1"
           android:angle="270" />
       <corners
-          android:topLeftRadius="8dp"
-          android:bottomLeftRadius="8dp"
+          android:topLeftRadius="12dp"
+          android:bottomLeftRadius="12dp"
+          android:topRightRadius="8dp"
+          android:bottomRightRadius="8dp"
           />
       <padding
           android:left="10dp"

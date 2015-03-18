@@ -17,14 +17,12 @@
         android:layout_height="match_parent"
         android:background="@drawable/background" >
 
-        <!--
         <FrameLayout
             android:id="@+id/top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1" >
+            android:padding="4dp" >
         </FrameLayout>
-        -->
 
         <FrameLayout
             android:id="@+id/bottom"
@@ -38,7 +36,9 @@
             android:id="@+id/center"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@id/bottom" >
+            android:layout_above="@id/bottom"
+            android:layout_below="@id/top"
+            android:padding="4dp" >
         </FrameLayout>
     </RelativeLayout>
 
