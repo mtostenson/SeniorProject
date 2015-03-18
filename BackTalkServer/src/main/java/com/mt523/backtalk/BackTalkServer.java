@@ -61,7 +61,7 @@ class BackTalkServer {
                 defaultDeck.add(new Card(resultSet.getInt("id"), resultSet
                         .getString("question"), resultSet.getString("answer"),
                         resultSet.getString("category")));
-                System.out.println(defaultDeck.lastElement().toString());
+//                System.out.println(defaultDeck.lastElement().toString());
             }
 
             // Initialize server -----------------------------------------------

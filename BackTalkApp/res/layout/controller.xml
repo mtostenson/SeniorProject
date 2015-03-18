@@ -10,8 +10,8 @@
         style="@style/button_text"
         android:layout_width="128dp"
         android:layout_height="match_parent"
-        android:background="@drawable/button1"
         android:layout_alignParentLeft="true"
+        android:background="@drawable/button1"
         android:text="RECORD" />
 
     <Button
@@ -26,10 +26,10 @@
     <Button
         android:id="@+id/btnGuess"
         style="@style/button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"
         android:layout_toEndOf="@id/btnRecord"
         android:layout_toLeftOf="@id/btnPlay"
         android:layout_toRightOf="@id/btnRecord"
