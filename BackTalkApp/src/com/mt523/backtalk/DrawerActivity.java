@@ -98,7 +98,7 @@ public class DrawerActivity extends ActionBarActivity implements
         } else {
             Log.d(this.getClass().getSimpleName(),
                     "Pulling content from CLIENT database.");
-            getDeckFromDb();
+            deck = getDeck();
         }
 
         // Set up the drawer.
@@ -107,6 +107,7 @@ public class DrawerActivity extends ActionBarActivity implements
 
         // Set up card fragment
         cardFragment = CardFragment.newCard(deck.firstElement());
+//        cardFragment = CardFragment.newCard(new Card(2345,"test","test","test"));
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.center, cardFragment).commit();
 
@@ -298,7 +299,7 @@ public class DrawerActivity extends ActionBarActivity implements
             values.put(BackTalkDbHelper.COLUMN_ANSWER, card.getAnswer());
             values.put(BackTalkDbHelper.COLUMN_CATEGORY, card.getCategory());
             database.insert(BackTalkDbHelper.TABLE_CARDS, null, values);
-            getDeckFromDb();
+            deck = getDeck();
         }
     }
 
@@ -336,11 +337,11 @@ public class DrawerActivity extends ActionBarActivity implements
     }
 
     public Vector<Card> getDeck() {
-        Vector<Card> deck = new Vector<Card>();
+        Vector<Card> newDeck = new Vector<Card>();
         String query = "SELECT * FROM cards;";
         Cursor cursor = database.rawQuery(query, new String[] {});
         while (cursor.moveToNext()) {
-            deck.add(new Card(cursor.getInt(cursor
+            newDeck.add(new Card(cursor.getInt(cursor
                     .getColumnIndex(BackTalkDbHelper.COLUMN_ID)), cursor
                     .getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_QUESTION)),
@@ -349,12 +350,7 @@ public class DrawerActivity extends ActionBarActivity implements
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))));
         }
-        return deck;
-    }
-
-    private void getDeckFromDb() {
-        deck = getDeck();
-        goToCard(0);
+        return newDeck;
     }
 
     @Override
