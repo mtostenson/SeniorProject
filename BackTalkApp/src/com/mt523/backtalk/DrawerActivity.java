@@ -8,7 +8,6 @@ import java.util.Vector;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -27,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
@@ -46,10 +44,9 @@ import com.mt523.backtalk.util.WavRecorder;
 public class DrawerActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         RecorderControlFragment.RecordControlInterface,
-        CardFragment.CardInterface, ClientPacket.IBackTalkClient,
-        MediaPlayer.OnCompletionListener {
+        CardFragment.CardInterface, MediaPlayer.OnCompletionListener {
 
-    // My fragments
+    // My fragments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private RecorderControlFragment controlFragment;
     private CardFragment cardFragment;
     private GuessFragment guessFragment;
@@ -91,15 +88,13 @@ public class DrawerActivity extends ActionBarActivity implements
 
         // Populate the deck
         deck = getDeck();
-        if (deck.size() == 0) {
-            Log.d(this.getClass().getSimpleName(),
-                    "Pulling content from SERVER database.");
-            new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();
-        } else {
-            Log.d(this.getClass().getSimpleName(),
-                    "Pulling content from CLIENT database.");
-            deck = getDeck();
-        }
+        /*
+         * if (deck.size() == 0) { Log.d(this.getClass().getSimpleName(),
+         * "Pulling content from SERVER database."); new ServerTransaction(new
+         * CardRequest(CardTier.DEFAULT)).execute(); } else {
+         * Log.d(this.getClass().getSimpleName(),
+         * "Pulling content from CLIENT database."); deck = getDeck(); }
+         */
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
@@ -107,7 +102,8 @@ public class DrawerActivity extends ActionBarActivity implements
 
         // Set up card fragment
         cardFragment = CardFragment.newCard(deck.firstElement());
-//        cardFragment = CardFragment.newCard(new Card(2345,"test","test","test"));
+        // cardFragment = CardFragment.newCard(new
+        // Card(2345,"test","test","test"));
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.center, cardFragment).commit();
 
@@ -288,52 +284,6 @@ public class DrawerActivity extends ActionBarActivity implements
     public int getIndex() {
         // TODO Auto-generated method stub
         return 0;
-    }
-
-    @Override
-    public void setDeck(Vector<Card> deck) {
-        for (Card card : deck) {
-            ContentValues values = new ContentValues();
-            values.put(BackTalkDbHelper.COLUMN_ID, card.getId());
-            values.put(BackTalkDbHelper.COLUMN_QUESTION, card.getQuestion());
-            values.put(BackTalkDbHelper.COLUMN_ANSWER, card.getAnswer());
-            values.put(BackTalkDbHelper.COLUMN_CATEGORY, card.getCategory());
-            database.insert(BackTalkDbHelper.TABLE_CARDS, null, values);
-            deck = getDeck();
-        }
-    }
-
-    private class ServerTransaction extends AsyncTask<Void, Void, ClientPacket> {
-
-        private ServerPacket outPacket;
-        private BtConnection connection;
-
-        public ServerTransaction(ServerPacket outPacket) {
-            this.outPacket = outPacket;
-        }
-
-        @Override
-        protected ClientPacket doInBackground(Void... arg0) {
-            try {
-                connection = new BtConnection();
-                connection.getOutput().writeObject(outPacket);
-                return (ClientPacket) connection.getInput().readObject();
-            } catch (Exception e) {
-                Log.e(MainActivity.class.getName(),
-                        "Packet read error:" + e.getMessage());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ClientPacket result) {
-            super.onPostExecute(result);
-            result.setClient(DrawerActivity.this);
-            result.handlePacket();
-            if (connection != null) {
-                connection.close();
-            }
-        }
     }
 
     public Vector<Card> getDeck() {

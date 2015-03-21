@@ -14,7 +14,6 @@ import java.util.Vector;
 
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.packets.client.DeckPacket;
-import com.mt523.backtalk.packets.client.NothingPacket;
 import com.mt523.backtalk.packets.server.CardRequest.CardTier;
 import com.mt523.backtalk.packets.server.ServerPacket;
 import com.mt523.backtalk.packets.server.ServerPacket.IBackTalkServer;
@@ -61,7 +60,7 @@ class BackTalkServer {
                 defaultDeck.add(new Card(resultSet.getInt("id"), resultSet
                         .getString("question"), resultSet.getString("answer"),
                         resultSet.getString("category")));
-//                System.out.println(defaultDeck.lastElement().toString());
+                // System.out.println(defaultDeck.lastElement().toString());
             }
 
             // Initialize server -----------------------------------------------
