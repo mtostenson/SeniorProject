@@ -1,5 +1,7 @@
 package com.mt523.backtalk.fragments;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -24,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.mt523.backtalk.DrawerActivity;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 
@@ -92,8 +93,9 @@ public class NavigationDrawerFragment extends Fragment {
         Cursor cursor = database.rawQuery(query, new String[] {});
         categories = new String[cursor.getCount()];
         while (cursor.moveToNext()) {
-            categories[cursor.getPosition()] = cursor.getString(cursor
-                    .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY));
+            categories[cursor.getPosition()] = cursor.getString(
+                    cursor.getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))
+                    .toUpperCase(Locale.ENGLISH);
         }
         database.close();
 
@@ -243,7 +245,8 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+//            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onCategorySelected(categories[position].toLowerCase());
         }
     }
 
@@ -335,5 +338,7 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+        
+        void onCategorySelected(String category);
     }
 }

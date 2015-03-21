@@ -82,30 +82,13 @@ public class DrawerActivity extends ActionBarActivity implements
                 .findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
-        // Initialize database
-        dbHelper = new BackTalkDbHelper(DrawerActivity.this);
-        database = dbHelper.getWritableDatabase();
-
-        // Populate the deck
-        deck = getDeck();
-        /*
-         * if (deck.size() == 0) { Log.d(this.getClass().getSimpleName(),
-         * "Pulling content from SERVER database."); new ServerTransaction(new
-         * CardRequest(CardTier.DEFAULT)).execute(); } else {
-         * Log.d(this.getClass().getSimpleName(),
-         * "Pulling content from CLIENT database."); deck = getDeck(); }
-         */
-
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        // Set up card fragment
-        cardFragment = CardFragment.newCard(deck.firstElement());
-        // cardFragment = CardFragment.newCard(new
-        // Card(2345,"test","test","test"));
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.center, cardFragment).commit();
+
+        // Populate the deck
+        getDeck("places"); // TODO Store last category as shared pref
 
         // Set up recording controls
         controlFragment = new RecorderControlFragment();
@@ -121,6 +104,14 @@ public class DrawerActivity extends ActionBarActivity implements
             folder.mkdir();
         }
 
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        database.close();
+        database = null;
+        dbHelper = null;
     }
 
     @Override
@@ -286,9 +277,14 @@ public class DrawerActivity extends ActionBarActivity implements
         return 0;
     }
 
-    public Vector<Card> getDeck() {
+    public void getDeck(String category) {
         Vector<Card> newDeck = new Vector<Card>();
-        String query = "SELECT * FROM cards;";
+        String query = "SELECT * FROM cards WHERE "
+                + BackTalkDbHelper.COLUMN_CATEGORY + "='" + category + "';";
+        if(database == null || !database.isOpen()) {
+            dbHelper = new BackTalkDbHelper(DrawerActivity.this);
+            database = dbHelper.getWritableDatabase();
+        }
         Cursor cursor = database.rawQuery(query, new String[] {});
         while (cursor.moveToNext()) {
             newDeck.add(new Card(cursor.getInt(cursor
@@ -300,12 +296,23 @@ public class DrawerActivity extends ActionBarActivity implements
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))));
         }
-        return newDeck;
+        deck = newDeck;
+        // Set up card fragment
+        cardFragment = CardFragment.newCard(deck.firstElement());
+        // cardFragment = CardFragment.newCard(new
+        // Card(2345,"test","test","test"));
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.center, cardFragment).commit();
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
         controlFragment.bPlay.setEnabled(true);
+    }
+
+    @Override
+    public void onCategorySelected(String category) {
+        getDeck(category);
     }
 
 }
