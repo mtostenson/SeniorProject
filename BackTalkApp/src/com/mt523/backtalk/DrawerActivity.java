@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -25,12 +24,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.jirbo.adcolony.AdColony;
 import com.jirbo.adcolony.AdColonyAd;
 import com.jirbo.adcolony.AdColonyAdAvailabilityListener;
 import com.jirbo.adcolony.AdColonyAdListener;
-import com.jirbo.adcolony.AdColonyVideoAd;
+import com.jirbo.adcolony.AdColonyV4VCListener;
+import com.jirbo.adcolony.AdColonyV4VCReward;
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.NavigationDrawerFragment;
@@ -44,7 +45,8 @@ public class DrawerActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         RecorderControlFragment.RecordControlInterface,
         CardFragment.CardInterface, MediaPlayer.OnCompletionListener,
-        AdColonyAdListener, AdColonyAdAvailabilityListener {
+        AdColonyAdListener, AdColonyV4VCListener,
+        AdColonyAdAvailabilityListener {
 
     // My fragments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private RecorderControlFragment controlFragment;
@@ -58,7 +60,9 @@ public class DrawerActivity extends ActionBarActivity implements
     private SQLiteDatabase database;
     private Vector<Card> deck;
 
-    int credits = 0;
+    // Ads and stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    int credits;
+    String vc_name = "credits";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the
@@ -80,14 +84,15 @@ public class DrawerActivity extends ActionBarActivity implements
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        AdColony.configure(this, "version:1.0,store:google",
-                getString(R.string.APP_ID), getString(R.string.ZONE_ID));
-        AdColony.addAdAvailabilityListener(this);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+
+        // Ad things
+        AdColony.configure(this, "version:1.0,store:google",
+                getString(R.string.APP_ID), getString(R.string.ZONE_ID));
+        AdColony.addV4VCListener(this);
+        AdColony.addAdAvailabilityListener(this);
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
@@ -322,18 +327,31 @@ public class DrawerActivity extends ActionBarActivity implements
 
     @Override
     public void onAdColonyAdAttemptFinished(AdColonyAd arg0) {
-        // TODO Auto-generated method stub
-        credits++;
     }
 
     @Override
     public void onAdColonyAdStarted(AdColonyAd arg0) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onAdColonyAdAvailabilityChange(boolean available, String zone_id) {
         if (available)
             Log.d("AdColony", "Video Ad available");
+    }
+
+    @Override
+    public void onAdColonyV4VCReward(AdColonyV4VCReward reward) {
+        if (reward.success()) {
+            Log.d("AdColony", "Earned " + reward.amount() + " credits.");
+            vc_name = reward.name();
+            credits += reward.amount();
+            updateCredits(credits);
+        }
+    }
+
+    private void updateCredits(int amount) {
+        TextView t = (TextView) mNavigationDrawerFragment.getView()
+                .findViewById(R.id.stats_label);
+        t.setText("Credits: " + amount);
     }
 }

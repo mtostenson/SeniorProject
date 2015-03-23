@@ -6,10 +6,21 @@
     tools:context="com.mt523.backtalk.fragments.NavigationDrawerFragment" >
 
     <TextView
+        android:id="@+id/stats_label"
+        style="@style/ShadowText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange2"
+        android:gravity="center"
+        android:text="STATS"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <TextView
         android:id="@+id/categories_label"
         style="@style/ShadowText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/stats_label"
         android:background="@color/orange2"
         android:gravity="center"
         android:text="CATEGORIES"

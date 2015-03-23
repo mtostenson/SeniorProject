@@ -29,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jirbo.adcolony.AdColonyAdListener;
+import com.jirbo.adcolony.AdColonyV4VCAd;
 import com.jirbo.adcolony.AdColonyVideoAd;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
@@ -79,6 +80,8 @@ public class NavigationDrawerFragment extends Fragment {
     private BackTalkDbHelper dbHelper;
 
     private String[] categories;
+    private String vc_name = "credits";
+    private int credits = 0;
 
     public NavigationDrawerFragment() {
     }
@@ -141,16 +144,24 @@ public class NavigationDrawerFragment extends Fragment {
                         selectItem(position);
                     }
                 });
+        ((TextView) rootView.findViewById(R.id.stats_label)).setTypeface(tf);
         ((TextView) rootView.findViewById(R.id.categories_label))
                 .setTypeface(tf);
-        ((TextView) rootView.findViewById(R.id.options_label))
-                .setTypeface(tf);
+        ((TextView) rootView.findViewById(R.id.options_label)).setTypeface(tf);
         mCategoryList.setAdapter(new ArrayAdapter<String>(getActionBar()
                 .getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1, categories));
         mCategoryList.setItemChecked(mCurrentSelectedPosition, true);
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (database != null) {
+            database.close();
+        }
     }
 
     public boolean isDrawerOpen() {
@@ -315,8 +326,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         if (item.getItemId() == R.id.action_example) {
             Log.d("AdColony", "That's the right button");
-            AdColonyVideoAd ad = new AdColonyVideoAd(
-                    getString(R.string.ZONE_ID))
+            AdColonyV4VCAd ad = new AdColonyV4VCAd(getString(R.string.ZONE_ID))
                     .withListener((AdColonyAdListener) getActivity());
             ad.show();
             return true;
@@ -358,4 +368,5 @@ public class NavigationDrawerFragment extends Fragment {
 
         void onCategorySelected(String category);
     }
+
 }
