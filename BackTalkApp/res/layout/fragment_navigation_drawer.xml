@@ -1,9 +1,27 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/orange1"
-    android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
-    tools:context="com.mt523.backtalk.fragments.NavigationDrawerFragment" />
+    tools:context="com.mt523.backtalk.fragments.NavigationDrawerFragment" >
+
+    <TextView
+        android:id="@+id/credits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/orange2"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:text="CATEGORIES"
+        android:textColor="@android:color/white" />
+
+    <ListView
+        android:id="@+id/category_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/credits"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp" />
+
+</RelativeLayout>

@@ -20,7 +20,7 @@ import com.mt523.backtalk.util.BtConnection;
 
 public class SplashActivity extends Activity implements
         ClientPacket.IBackTalkClient {
-    
+
     BackTalkDbHelper dbHelper;
     SQLiteDatabase database;
 
@@ -32,14 +32,9 @@ public class SplashActivity extends Activity implements
         database = dbHelper.getWritableDatabase();
         database = dbHelper.getReadableDatabase();
         String query = "SELECT DISTINCT category FROM cards;";
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        if(database.rawQuery(query, new String[]{}).getCount() <= 0) {
-            new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();            
+
+        if (database.rawQuery(query, new String[] {}).getCount() <= 0) {
+            new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();
         } else {
             finish();
         }
@@ -49,7 +44,7 @@ public class SplashActivity extends Activity implements
 
         private ServerPacket outPacket;
         private BtConnection connection;
-        
+
         public ServerTransaction(ServerPacket outPacket) {
             this.outPacket = outPacket;
         }
@@ -77,7 +72,7 @@ public class SplashActivity extends Activity implements
             }
         }
     }
-    
+
     @Override
     public void finish() {
         database.close();

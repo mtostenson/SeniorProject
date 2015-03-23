@@ -62,7 +62,8 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+    private View rootView;
+    private ListView mCategoryList;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -122,9 +123,10 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView
+        rootView = inflater.inflate(R.layout.fragment_navigation_drawer,
+                container, false);
+        mCategoryList = (ListView) rootView.findViewById(R.id.category_list);
+        mCategoryList
                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
@@ -133,12 +135,12 @@ public class NavigationDrawerFragment extends Fragment {
                     }
                 });
 
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
+        mCategoryList.setAdapter(new ArrayAdapter<String>(getActionBar()
                 .getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1, categories));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        mCategoryList.setItemChecked(mCurrentSelectedPosition, true);
+        return rootView;
     }
 
     public boolean isDrawerOpen() {
@@ -240,8 +242,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
+        if (mCategoryList != null) {
+            mCategoryList.setItemChecked(position, true);
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
