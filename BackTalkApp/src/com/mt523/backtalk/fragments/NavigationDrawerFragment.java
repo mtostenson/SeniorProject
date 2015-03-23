@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +25,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.jirbo.adcolony.AdColonyAdListener;
+import com.jirbo.adcolony.AdColonyVideoAd;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 
@@ -245,7 +247,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-//            mCallbacks.onNavigationDrawerItemSelected(position);
+            // mCallbacks.onNavigationDrawerItemSelected(position);
             mCallbacks.onCategorySelected(categories[position].toLowerCase());
         }
     }
@@ -300,8 +302,11 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT)
-                    .show();
+            Log.d("AdColony", "That's the right button");
+            AdColonyVideoAd ad = new AdColonyVideoAd(
+                    getString(R.string.ZONE_ID))
+                    .withListener((AdColonyAdListener) getActivity());
+            ad.show();
             return true;
         }
 
@@ -338,7 +343,7 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
-        
+
         void onCategorySelected(String category);
     }
 }

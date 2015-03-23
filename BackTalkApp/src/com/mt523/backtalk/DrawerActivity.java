@@ -7,11 +7,10 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.ContentValues;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -27,24 +26,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.jirbo.adcolony.AdColony;
+import com.jirbo.adcolony.AdColonyAd;
+import com.jirbo.adcolony.AdColonyAdAvailabilityListener;
+import com.jirbo.adcolony.AdColonyAdListener;
+import com.jirbo.adcolony.AdColonyVideoAd;
 import com.mt523.backtalk.fragments.CardFragment;
 import com.mt523.backtalk.fragments.GuessFragment;
 import com.mt523.backtalk.fragments.NavigationDrawerFragment;
 import com.mt523.backtalk.fragments.ProgressFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.Card;
-import com.mt523.backtalk.packets.client.ClientPacket;
-import com.mt523.backtalk.packets.server.CardRequest;
-import com.mt523.backtalk.packets.server.CardRequest.CardTier;
-import com.mt523.backtalk.packets.server.ServerPacket;
 import com.mt523.backtalk.util.BackTalkDbHelper;
-import com.mt523.backtalk.util.BtConnection;
 import com.mt523.backtalk.util.WavRecorder;
 
 public class DrawerActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         RecorderControlFragment.RecordControlInterface,
-        CardFragment.CardInterface, MediaPlayer.OnCompletionListener {
+        CardFragment.CardInterface, MediaPlayer.OnCompletionListener,
+        AdColonyAdListener, AdColonyAdAvailabilityListener {
 
     // My fragments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private RecorderControlFragment controlFragment;
@@ -57,6 +57,8 @@ public class DrawerActivity extends ActionBarActivity implements
     private BackTalkDbHelper dbHelper;
     private SQLiteDatabase database;
     private Vector<Card> deck;
+
+    int credits = 0;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the
@@ -78,6 +80,11 @@ public class DrawerActivity extends ActionBarActivity implements
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+        AdColony.configure(this, "version:1.0,store:google",
+                getString(R.string.APP_ID), getString(R.string.ZONE_ID));
+        AdColony.addAdAvailabilityListener(this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -85,7 +92,6 @@ public class DrawerActivity extends ActionBarActivity implements
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
 
         // Populate the deck
         getDeck("places"); // TODO Store last category as shared pref
@@ -105,13 +111,22 @@ public class DrawerActivity extends ActionBarActivity implements
         }
 
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
-        database.close();
+        AdColony.pause();
+        if (database != null) {
+            database.close();
+        }
         database = null;
         dbHelper = null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AdColony.resume(this);
     }
 
     @Override
@@ -125,17 +140,7 @@ public class DrawerActivity extends ActionBarActivity implements
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
-        case 1:
-            mTitle = getString(R.string.title_section1);
-            break;
-        case 2:
-            mTitle = getString(R.string.title_section2);
-            break;
-        case 3:
-            mTitle = getString(R.string.title_section3);
-            break;
-        }
+        mTitle = deck.firstElement().getCategory();
     }
 
     public void restoreActionBar() {
@@ -281,7 +286,7 @@ public class DrawerActivity extends ActionBarActivity implements
         Vector<Card> newDeck = new Vector<Card>();
         String query = "SELECT * FROM cards WHERE "
                 + BackTalkDbHelper.COLUMN_CATEGORY + "='" + category + "';";
-        if(database == null || !database.isOpen()) {
+        if (database == null || !database.isOpen()) {
             dbHelper = new BackTalkDbHelper(DrawerActivity.this);
             database = dbHelper.getWritableDatabase();
         }
@@ -315,4 +320,20 @@ public class DrawerActivity extends ActionBarActivity implements
         getDeck(category);
     }
 
+    @Override
+    public void onAdColonyAdAttemptFinished(AdColonyAd arg0) {
+        // TODO Auto-generated method stub
+        credits++;
+    }
+
+    @Override
+    public void onAdColonyAdStarted(AdColonyAd arg0) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onAdColonyAdAvailabilityChange(boolean available, String zone_id) {
+        if (available)
+            Log.d("AdColony", "Video Ad available");
+    }
 }
