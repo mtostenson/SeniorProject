@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -25,11 +26,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.jirbo.adcolony.AdColonyAdListener;
 import com.jirbo.adcolony.AdColonyVideoAd;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
+import com.mt523.backtalk.util.FontUtil;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -66,6 +69,8 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mCategoryList;
     private View mFragmentContainerView;
 
+    private Typeface tf;
+
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
@@ -88,6 +93,8 @@ public class NavigationDrawerFragment extends Fragment {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+
+        tf = FontUtil.instance(getActivity().getBaseContext()).getFont();
 
         // Set up the categories
         dbHelper = new BackTalkDbHelper(getActivity().getBaseContext());
@@ -134,7 +141,10 @@ public class NavigationDrawerFragment extends Fragment {
                         selectItem(position);
                     }
                 });
-
+        ((TextView) rootView.findViewById(R.id.categories_label))
+                .setTypeface(tf);
+        ((TextView) rootView.findViewById(R.id.options_label))
+                .setTypeface(tf);
         mCategoryList.setAdapter(new ArrayAdapter<String>(getActionBar()
                 .getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,

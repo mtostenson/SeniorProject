@@ -6,22 +6,33 @@
     tools:context="com.mt523.backtalk.fragments.NavigationDrawerFragment" >
 
     <TextView
-        android:id="@+id/credits"
+        android:id="@+id/categories_label"
+        style="@style/ShadowText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:background="@color/orange2"
-        android:textAppearance="@android:style/TextAppearance.Large"
+        android:gravity="center"
         android:text="CATEGORIES"
-        android:textColor="@android:color/white" />
+        android:textAppearance="@android:style/TextAppearance.Large" />
 
     <ListView
         android:id="@+id/category_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/credits"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/categories_label"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />
+
+    <TextView
+        android:id="@+id/options_label"
+        style="@style/ShadowText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/category_list"
+        android:background="@color/orange2"
+        android:gravity="center"
+        android:text="OPTIONS"
+        android:textAppearance="@android:style/TextAppearance.Large" />
 
 </RelativeLayout>
