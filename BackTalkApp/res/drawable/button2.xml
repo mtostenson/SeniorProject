@@ -6,8 +6,11 @@
           android:width="1dp"
           android:color="@android:color/darker_gray"          
           />
-      <solid
+        <solid
           android:color="#ef4444" />
+        <corners
+          android:radius="8dp" />
+      
       <padding
           android:left="10dp"
           android:top="10dp"
