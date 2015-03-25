@@ -3,6 +3,8 @@ package com.mt523.backtalk;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -61,6 +63,7 @@ public class DrawerActivity extends ActionBarActivity implements
     private Vector<Card> deck;
 
     // Ads and stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Properties properties;
     int credits;
     String vc_name = "credits";
 
@@ -97,6 +100,7 @@ public class DrawerActivity extends ActionBarActivity implements
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        loadProperties();
 
         // Populate the deck
         getDeck("places"); // TODO Store last category as shared pref
@@ -353,5 +357,27 @@ public class DrawerActivity extends ActionBarActivity implements
         TextView t = (TextView) mNavigationDrawerFragment.getView()
                 .findViewById(R.id.stats_label);
         t.setText("Credits: " + amount);
+        properties.setProperty("vc_name", vc_name);
+        properties.setProperty("total_amount", "" + credits);
+        try {
+            OutputStream outfile = openFileOutput("vc_info.properties", 0);
+            properties.store(outfile, "vc info");
+            outfile.close();
+        } catch (Exception err) {
+        }
+    }
+
+    void loadProperties() {
+        properties = new Properties();
+        try {
+            properties.load(openFileInput("vc_info.properties"));
+            vc_name = properties.getProperty("vc_name", "credits");
+            credits = Integer.parseInt(properties.getProperty("total_amount",
+                    "0"));
+        } catch (Exception err) {
+            vc_name = "credits";
+            credits = 0;
+        }
+        updateCredits(credits);
     }
 }
