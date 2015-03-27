@@ -13,6 +13,7 @@ public class BackTalkDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_HINT = "hint";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_SOLVED = "solved";
+    public static final String COLUMN_LOCKED = "locked";
 
     private static final String DATABASE_NAME = "backtalk.db";
     private static final int DATABASE_VERSION = 1;
@@ -20,7 +21,8 @@ public class BackTalkDbHelper extends SQLiteOpenHelper {
             + " (" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_QUESTION
             + " TEXT NOT NULL, " + COLUMN_ANSWER + " TEXT NOT NULL, "
             + COLUMN_HINT + " TEXT NOT NULL, " + COLUMN_CATEGORY
-            + " TEXT NOT NULL, " + COLUMN_SOLVED + " INTEGER DEFAULT 0);";
+            + " TEXT NOT NULL, " + COLUMN_SOLVED + " INTEGER DEFAULT 0, "
+            + COLUMN_LOCKED + " INTEGER DEFAULT 1);";
 
     public BackTalkDbHelper(Context c) {
         super(c, DATABASE_NAME, null, DATABASE_VERSION);

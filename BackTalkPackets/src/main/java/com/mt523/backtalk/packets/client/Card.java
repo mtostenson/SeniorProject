@@ -9,6 +9,8 @@ public class Card implements Serializable {
     private String answer;
     private String category;
     private String hint;
+    private Boolean solved = false;
+    private Boolean locked = true;
 
     public Card(int id, String question, String answer, String hint,
             String category) {
