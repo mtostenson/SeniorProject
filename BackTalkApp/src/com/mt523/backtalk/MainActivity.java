@@ -226,6 +226,8 @@ public class MainActivity extends ActionBarActivity implements
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_ANSWER)),
                     cursor.getString(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_HINT)),
+                    cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))));
         }
         return deck;

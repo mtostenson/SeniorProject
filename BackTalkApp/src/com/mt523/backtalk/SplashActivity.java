@@ -87,6 +87,7 @@ public class SplashActivity extends Activity implements
             values.put(BackTalkDbHelper.COLUMN_ID, card.getId());
             values.put(BackTalkDbHelper.COLUMN_QUESTION, card.getQuestion());
             values.put(BackTalkDbHelper.COLUMN_ANSWER, card.getAnswer());
+            values.put(BackTalkDbHelper.COLUMN_HINT, card.getHint());
             values.put(BackTalkDbHelper.COLUMN_CATEGORY, card.getCategory());
             database.insert(BackTalkDbHelper.TABLE_CARDS, null, values);
         }

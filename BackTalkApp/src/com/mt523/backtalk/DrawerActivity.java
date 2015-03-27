@@ -138,16 +138,6 @@ public class DrawerActivity extends ActionBarActivity implements
         AdColony.resume(this);
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // fragmentManager
-        // .beginTransaction()
-        // .replace(R.id.container,
-        // PlaceholderFragment.newInstance(position + 1)).commit();
-    }
-
     public void onSectionAttached(int number) {
         mTitle = deck.firstElement().getCategory();
     }
@@ -206,14 +196,6 @@ public class DrawerActivity extends ActionBarActivity implements
         }
 
         public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_drawer,
-                    container, false);
-            return rootView;
         }
 
         @Override
@@ -307,6 +289,8 @@ public class DrawerActivity extends ActionBarActivity implements
                             .getColumnIndex(BackTalkDbHelper.COLUMN_QUESTION)),
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_ANSWER)),
+                    cursor.getString(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_HINT)),
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))));
         }

@@ -8,11 +8,14 @@ public class Card implements Serializable {
     private String question;
     private String answer;
     private String category;
+    private String hint;
 
-    public Card(int id, String question, String answer, String category) {
+    public Card(int id, String question, String answer, String hint,
+            String category) {
         this.id = id;
         this.question = question;
         this.answer = answer;
+        this.hint = hint;
         this.category = category;
     }
 
@@ -37,5 +40,9 @@ public class Card implements Serializable {
         return String.format(
                 "\nid: %d\nquestion: %s\nanswer: %s\ncategory: %s\n", id,
                 question, answer, category);
+    }
+
+    public String getHint() {
+        return hint;
     }
 }

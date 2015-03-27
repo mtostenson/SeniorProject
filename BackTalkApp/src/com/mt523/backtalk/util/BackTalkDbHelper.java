@@ -10,6 +10,7 @@ public class BackTalkDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_QUESTION = "question";
     public static final String COLUMN_ANSWER = "answer";
+    public static final String COLUMN_HINT = "hint";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_SOLVED = "solved";
 
@@ -18,9 +19,9 @@ public class BackTalkDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_CARDS
             + " (" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_QUESTION
             + " TEXT NOT NULL, " + COLUMN_ANSWER + " TEXT NOT NULL, "
-            + COLUMN_CATEGORY + " TEXT NOT NULL, " + COLUMN_SOLVED
-            + " INTEGER DEFAULT 0);";    
-       
+            + COLUMN_HINT + " TEXT NOT NULL, " + COLUMN_CATEGORY
+            + " TEXT NOT NULL, " + COLUMN_SOLVED + " INTEGER DEFAULT 0);";
+
     public BackTalkDbHelper(Context c) {
         super(c, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -35,5 +36,5 @@ public class BackTalkDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CARDS);
         onCreate(db);
     }
-         
+
 }
