@@ -172,8 +172,12 @@ public class DrawerActivity extends ActionBarActivity implements
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_hint) {
-            Toast.makeText(DrawerActivity.this,
-                    cardFragment.getCard().getHint(), Toast.LENGTH_SHORT)
+            String toastBody = "Not enough credits";
+            if (credits > 0) {
+                toastBody = cardFragment.getCard().getHint();
+                updateCredits(--credits);
+            }
+            Toast.makeText(DrawerActivity.this, toastBody, Toast.LENGTH_SHORT)
                     .show();
         }
         return super.onOptionsItemSelected(item);
