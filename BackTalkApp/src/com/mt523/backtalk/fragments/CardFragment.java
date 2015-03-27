@@ -62,6 +62,10 @@ public class CardFragment extends Fragment implements GuessInterface {
     private String normalize(String s) {
         return s.replaceAll("\\W", "").toUpperCase(Locale.ENGLISH);
     }
+    
+    public Card getCard() {
+        return this.card;
+    }
 
     public interface CardInterface {
 

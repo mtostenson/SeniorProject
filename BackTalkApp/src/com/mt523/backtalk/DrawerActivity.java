@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jirbo.adcolony.AdColony;
 import com.jirbo.adcolony.AdColonyAd;
@@ -170,6 +171,10 @@ public class DrawerActivity extends ActionBarActivity implements
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_hint) {
+            Toast.makeText(DrawerActivity.this,
+                    cardFragment.getCard().getHint(), Toast.LENGTH_SHORT)
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }
