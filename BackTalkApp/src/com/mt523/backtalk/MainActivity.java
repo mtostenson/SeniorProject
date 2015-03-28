@@ -99,7 +99,6 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onGuess() {
         guessFragment = new GuessFragment();
-        guessFragment.setGuessInterface(cardFragment);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container2, guessFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -236,6 +235,12 @@ public class MainActivity extends ActionBarActivity implements
     private void getDeckFromDb() {
         deck = getDeck();
         goToCard(0);
+    }
+
+    @Override
+    public void setCardSolved(Card card) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

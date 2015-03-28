@@ -4,27 +4,25 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Vector;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,9 +45,9 @@ import com.mt523.backtalk.util.WavRecorder;
 public class DrawerActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         RecorderControlFragment.RecordControlInterface,
-        CardFragment.CardInterface, MediaPlayer.OnCompletionListener,
-        AdColonyAdListener, AdColonyV4VCListener,
-        AdColonyAdAvailabilityListener {
+        GuessFragment.GuessInterface, CardFragment.CardInterface,
+        MediaPlayer.OnCompletionListener, AdColonyAdListener,
+        AdColonyV4VCListener, AdColonyAdAvailabilityListener {
 
     // My fragments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private RecorderControlFragment controlFragment;
@@ -218,7 +216,6 @@ public class DrawerActivity extends ActionBarActivity implements
     @Override
     public void onGuess() {
         guessFragment = new GuessFragment();
-        guessFragment.setGuessInterface(cardFragment);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.bottom, guessFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -282,14 +279,21 @@ public class DrawerActivity extends ActionBarActivity implements
         return 0;
     }
 
+    @Override
+    public void setCardSolved(Card card) {
+        checkDb();
+        card.solved = true;
+        ContentValues values = new ContentValues();
+        values.put("solved", 1);
+        String where = "_id='" + card.getId() + "'";
+        database.update(BackTalkDbHelper.TABLE_CARDS, values, where, null);
+    }
+
     public void getDeck(String category) {
         Vector<Card> newDeck = new Vector<Card>();
         String query = "SELECT * FROM cards WHERE "
                 + BackTalkDbHelper.COLUMN_CATEGORY + "='" + category + "';";
-        if (database == null || !database.isOpen()) {
-            dbHelper = new BackTalkDbHelper(DrawerActivity.this);
-            database = dbHelper.getWritableDatabase();
-        }
+        checkDb();
         Cursor cursor = database.rawQuery(query, new String[] {});
         while (cursor.moveToNext()) {
             newDeck.add(new Card(cursor.getInt(cursor
@@ -310,6 +314,13 @@ public class DrawerActivity extends ActionBarActivity implements
         // Card(2345,"test","test","test"));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, cardFragment).commit();
+    }
+
+    private void checkDb() {
+        if (database == null || !database.isOpen()) {
+            dbHelper = new BackTalkDbHelper(DrawerActivity.this);
+            database = dbHelper.getWritableDatabase();
+        }
     }
 
     @Override
@@ -372,5 +383,24 @@ public class DrawerActivity extends ActionBarActivity implements
             credits = 0;
         }
         updateCredits(credits);
+    }
+
+    @Override
+    public void guess(String guess) {
+
+        if (normalize(guess).equals(
+                normalize(cardFragment.getCard().getAnswer()))) {
+            try {
+                setCardSolved(cardFragment.getCard());
+            } catch (Exception e) {
+                Log.e(this.getClass().getSimpleName(), e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private String normalize(String s) {
+        return s.replaceAll("\\W", "").toUpperCase(Locale.ENGLISH);
     }
 }

@@ -1,5 +1,6 @@
 package com.mt523.backtalk.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,8 +48,10 @@ public class GuessFragment extends Fragment {
         return rootView;
     }
 
-    public void setGuessInterface(GuessInterface guessInterface) {
-        this.guessInterface = guessInterface;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        guessInterface = (GuessInterface) activity;
     }
 
     public interface GuessInterface {

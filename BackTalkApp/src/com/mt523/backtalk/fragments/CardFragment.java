@@ -16,7 +16,7 @@ import com.mt523.backtalk.fragments.GuessFragment.GuessInterface;
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.FontUtil;
 
-public class CardFragment extends Fragment implements GuessInterface {
+public class CardFragment extends Fragment {
 
     private CardInterface activity;
     private Card card;
@@ -51,18 +51,6 @@ public class CardFragment extends Fragment implements GuessInterface {
         this.activity = (CardInterface) activity;
     }
 
-    @Override
-    public void guess(String guess) {
-         Toast.makeText(
-         getActivity().getApplicationContext(),
-         normalize(guess).equals(normalize(card.getAnswer())) ? "Match"
-         : "No match", Toast.LENGTH_SHORT).show();
-    }
-
-    private String normalize(String s) {
-        return s.replaceAll("\\W", "").toUpperCase(Locale.ENGLISH);
-    }
-    
     public Card getCard() {
         return this.card;
     }
@@ -72,5 +60,7 @@ public class CardFragment extends Fragment implements GuessInterface {
         public void goToCard(int index);
 
         public int getIndex();
+
+        public void setCardSolved(Card card);
     }
 }

@@ -28,7 +28,7 @@ public class ProgressFragment extends Fragment implements
 
     @Override
     public void onReverseUpdate(int percentage) {
-//        progressBar.setProgress(percentage);
+        // progressBar.setProgress(percentage);
     }
 
     @Override
