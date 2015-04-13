@@ -16,6 +16,8 @@ import com.mt523.backtalk.util.FontUtil;
 
 public class CardFragment extends Fragment {
 
+    private static final String TAG = CardFragment.class.getName();
+
     private CardInterface activity;
     private Card card;
     private TextView display, resultMessage, category, cardId;
@@ -59,6 +61,18 @@ public class CardFragment extends Fragment {
         this.activity = (CardInterface) activity;
     }
 
+    @Override
+    public void onResume() {
+        super.onDetach();
+        activity.showControls(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        activity.showControls(false);
+    }
+
     public Card getCard() {
         return this.card;
     }
@@ -79,5 +93,8 @@ public class CardFragment extends Fragment {
         public int getIndex();
 
         public void setCardSolved(Card card);
+
+        public void showControls(boolean show);
+
     }
 }

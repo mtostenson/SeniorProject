@@ -243,4 +243,12 @@ public class MainActivity extends ActionBarActivity implements
         
     }
 
+    @Override
+    public void showControls(boolean show) {
+        // TODO Auto-generated method stub
+        
+    }
+
+   
+
 }

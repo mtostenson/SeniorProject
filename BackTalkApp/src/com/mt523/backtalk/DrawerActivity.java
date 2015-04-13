@@ -23,7 +23,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -421,5 +423,11 @@ public class DrawerActivity extends ActionBarActivity implements
                 .replace(R.id.center, cardFragment)
                 .replace(R.id.bottom, controlFragment).addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void showControls(boolean show) {
+        ((FrameLayout) findViewById(R.id.bottom))
+                .setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }
