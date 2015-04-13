@@ -17,6 +17,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -299,21 +300,24 @@ public class DrawerActivity extends ActionBarActivity implements
         checkDb();
         Cursor cursor = database.rawQuery(query, new String[] {});
         while (cursor.moveToNext()) {
-            newDeck.add(new Card(cursor.getInt(cursor
-                    .getColumnIndex(BackTalkDbHelper.COLUMN_ID)), cursor
-                    .getString(cursor
+            newDeck.add(new Card(
+                    cursor.getInt(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_ID)),
+                    cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_QUESTION)),
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_ANSWER)),
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_HINT)),
                     cursor.getString(cursor
-                            .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))));
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY)),
+                    cursor.getInt(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_LOCKED)) == 1,
+                    cursor.getInt(cursor
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_SOLVED)) == 1));
         }
         deck = newDeck;
-        deckFragment = DeckFragment.instance(deck);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.center, deckFragment).commit();
+
         /*
          * // Set up card fragment cardFragment =
          * CardFragment.newCard(deck.firstElement()); // cardFragment =
@@ -338,6 +342,11 @@ public class DrawerActivity extends ActionBarActivity implements
     @Override
     public void onCategorySelected(String category) {
         getDeck(category);
+        deckFragment = DeckFragment.instance(deck);
+        getSupportFragmentManager().popBackStack(null,
+                getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.center, deckFragment).commit();
     }
 
     @Override

@@ -227,7 +227,8 @@ public class MainActivity extends ActionBarActivity implements
                     cursor.getString(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_HINT)),
                     cursor.getString(cursor
-                            .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))));
+                            .getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY)),
+                    false, false));
         }
         return deck;
     }
@@ -240,15 +241,13 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void setCardSolved(Card card) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void showControls(boolean show) {
         // TODO Auto-generated method stub
-        
-    }
 
-   
+    }
 
 }

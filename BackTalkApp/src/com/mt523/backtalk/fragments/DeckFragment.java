@@ -33,14 +33,15 @@ public class DeckFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_deck, container,
                 false);
         GridView grid = (GridView) rootView.findViewById(R.id.deck_grid);
-        grid.setAdapter(new GridAdapter(getActivity().getBaseContext(), deck));
-        grid.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                    int position, long id) {
-                activity.onCardSelected(position);
-            }
-        });
+        grid.setAdapter(new GridAdapter(getActivity().getBaseContext(),
+                activity, deck));
+        // grid.setOnItemClickListener(new OnItemClickListener() {
+        // @Override
+//            public void onItemClick(AdapterView<?> parent, View v,
+//                    int position, long id) {
+//                activity.onCardSelected(position);
+//            }
+//        });
         return rootView;
     }
 

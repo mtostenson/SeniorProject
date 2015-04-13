@@ -9,16 +9,18 @@ public class Card implements Serializable {
     private String answer;
     private String category;
     private String hint;
-    public Boolean solved = false;
-    public Boolean locked = true;
+    public Boolean solved;
+    public Boolean locked;
 
     public Card(int id, String question, String answer, String hint,
-            String category) {
+            String category, boolean locked, boolean solved) {
         this.id = id;
         this.question = question;
         this.answer = answer;
         this.hint = hint;
         this.category = category;
+        this.locked = locked;
+        this.solved = solved;
     }
 
     public int getId() {

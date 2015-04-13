@@ -6,37 +6,52 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.mt523.backtalk.R;
+import com.mt523.backtalk.fragments.DeckFragment.DeckInterface;
 import com.mt523.backtalk.packets.client.Card;
 
 public class GridAdapter extends BaseAdapter {
 
     private Context context;
+    private DeckInterface activity;
     private ArrayList<Card> cards;
 
-    public GridAdapter(Context context, ArrayList<Card> cards) {
+    public GridAdapter(Context context, DeckInterface activity,
+            ArrayList<Card> cards) {
         this.context = context;
+        this.activity = activity;
         this.cards = cards;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        View button;
         if (convertView == null) {
             Typeface font = FontUtil.instance(context).getFont();
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.grid_item, parent, false);
-            ((TextView) v).setTypeface(font);
+            button = inflater.inflate(R.layout.grid_item, parent, false);
+            ((Button) button).setTypeface(font);
         } else {
-            v = (TextView) convertView;
+            button = (Button) convertView;
         }
-        ((TextView) v).setText(Integer.toString(position + 1));
-        return v;
+        ((Button) button).setText(Integer.toString(position + 1));
+        button.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                activity.onCardSelected(position);
+            }
+        });
+        if (cards.get(position).locked) {
+            button.setEnabled(false);
+        }
+        return button;
     }
 
     @Override
