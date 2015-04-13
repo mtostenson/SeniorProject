@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.mt523.backtalk.R;
@@ -32,6 +34,13 @@ public class DeckFragment extends Fragment {
                 false);
         GridView grid = (GridView) rootView.findViewById(R.id.deck_grid);
         grid.setAdapter(new GridAdapter(getActivity().getBaseContext(), deck));
+        grid.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                    int position, long id) {
+                activity.onCardSelected(position);
+            }
+        });
         return rootView;
     }
 

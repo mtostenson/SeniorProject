@@ -109,8 +109,6 @@ public class DrawerActivity extends ActionBarActivity implements
 
         // Set up recording controls
         controlFragment = new RecorderControlFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.bottom, controlFragment).commit();
 
         // Initialize player
         player = new MediaPlayer();
@@ -393,20 +391,21 @@ public class DrawerActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void guess(String guess) {
-
+    public boolean guess(String guess) {
         if (normalize(guess).equals(
                 normalize(cardFragment.getCard().getAnswer()))) {
             try {
                 setCardSolved(cardFragment.getCard());
-                cardFragment.showMessage("Correct!");
             } catch (Exception e) {
                 Log.e(this.getClass().getSimpleName(), e.getMessage());
                 e.printStackTrace();
             }
+            cardFragment.showMessage("Correct!");
+            return true;
         } else {
             // cardFragment.showMessage("Nope :(");
             cardFragment.shake();
+            return false;
         }
 
     }
@@ -417,7 +416,10 @@ public class DrawerActivity extends ActionBarActivity implements
 
     @Override
     public void onCardSelected(int id) {
-        // TODO Auto-generated method stub
-
+        cardFragment = CardFragment.newCard(deck.get(id));
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.center, cardFragment)
+                .replace(R.id.bottom, controlFragment).addToBackStack(null)
+                .commit();
     }
 }

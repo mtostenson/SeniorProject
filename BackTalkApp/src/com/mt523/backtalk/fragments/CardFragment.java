@@ -18,7 +18,7 @@ public class CardFragment extends Fragment {
 
     private CardInterface activity;
     private Card card;
-    private TextView display, resultMessage, category;
+    private TextView display, resultMessage, category, cardId;
 
     public static CardFragment newCard(Card card) {
         CardFragment cardFragment = new CardFragment();
@@ -36,12 +36,14 @@ public class CardFragment extends Fragment {
         resultMessage = (TextView) rootView
                 .findViewById(R.id.result_message_view);
         category = (TextView) rootView.findViewById(R.id.category);
+        cardId = (TextView) rootView.findViewById(R.id.card_id);
         display.setTypeface(FontUtil.instance(
                 getActivity().getApplicationContext()).getFont());
         resultMessage.setTypeface(FontUtil.instance(
                 getActivity().getApplicationContext()).getFont());
         display.setText("\"" + card.getQuestion() + "\"");
         category.setText(card.getCategory());
+        cardId.setText(Integer.toString(card.getId() % 100 + 1));
         display.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

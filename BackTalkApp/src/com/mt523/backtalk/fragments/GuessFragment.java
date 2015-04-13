@@ -40,9 +40,10 @@ public class GuessFragment extends Fragment {
         btnGuess.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                guessInterface.guess(input.getText().toString());
-                getFragmentManager().popBackStack();
+                if (guessInterface.guess(input.getText().toString())) {
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    getFragmentManager().popBackStack();
+                }
             }
         });
         return rootView;
@@ -55,7 +56,7 @@ public class GuessFragment extends Fragment {
     }
 
     public interface GuessInterface {
-        public void guess(String guess);
+        public boolean guess(String guess);
     }
 
     @Override
