@@ -17,13 +17,10 @@ public class RecorderControlFragment extends Fragment {
 
     private RecordControlInterface recordControlInterface;
 
-    // GUI
+    // GUI ---------------------------------------------------------------------
     public Button bRecord;
     public Button bGuess;
     public Button bPlay;
-
-    public RecorderControlFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

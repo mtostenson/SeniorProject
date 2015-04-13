@@ -271,8 +271,8 @@ public class WavRecorder implements OnRecordPositionUpdateListener {
                     writerForward.read(currentSample, 0, SAMPLE_SIZE);
                     writerReverse.write(currentSample);
                     locater -= SAMPLE_SIZE;
-//                    double completion = (dataLength - locater) / dataLength;
-//                    reverser.onProgressUpdate((int) (completion * 100));
+                    // double completion = (dataLength - locater) / dataLength;
+                    // reverser.onProgressUpdate((int) (completion * 100));
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
