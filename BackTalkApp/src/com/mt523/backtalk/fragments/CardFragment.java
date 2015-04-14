@@ -15,7 +15,6 @@ import com.mt523.backtalk.util.BtAnimations;
 import com.mt523.backtalk.util.FontUtil;
 
 public class CardFragment extends Fragment {
-
     private static final String TAG = CardFragment.class.getName();
 
     private CardInterface activity;

@@ -17,7 +17,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -149,7 +148,7 @@ public class DrawerActivity extends ActionBarActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        // actionBar.setTitle(mTitle);
     }
 
     @Override
@@ -347,6 +346,7 @@ public class DrawerActivity extends ActionBarActivity implements
                 getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, deckFragment).commit();
+        getSupportActionBar().setTitle(deck.get(0).getCategory());
     }
 
     @Override

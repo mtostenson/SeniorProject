@@ -365,7 +365,6 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
 
-
         void onCategorySelected(String category);
     }
 
