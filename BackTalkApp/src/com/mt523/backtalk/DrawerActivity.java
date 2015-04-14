@@ -53,6 +53,8 @@ public class DrawerActivity extends ActionBarActivity implements
         AdColonyAdListener, AdColonyV4VCListener,
         AdColonyAdAvailabilityListener {
 
+    private static final String TAG = DrawerActivity.class.getName();
+
     // My fragments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private RecorderControlFragment controlFragment;
     private DeckFragment deckFragment;
@@ -290,6 +292,7 @@ public class DrawerActivity extends ActionBarActivity implements
         values.put("solved", 1);
         String where = "_id='" + card.getId() + "'";
         database.update(BackTalkDbHelper.TABLE_CARDS, values, where, null);
+        Log.d(TAG, "Set card solved with id " + card.getId());
     }
 
     public void getDeck(String category) {
@@ -409,8 +412,9 @@ public class DrawerActivity extends ActionBarActivity implements
                 setCardSolved(cardFragment.getCard());
             } catch (Exception e) {
                 Log.e(this.getClass().getSimpleName(), e.getMessage());
-                e.printStackTrace();
+                // e.printStackTrace();
             }
+            unlockCard(cardFragment.getCard().getId() + 1);
             cardFragment.showMessage("Correct!");
             return true;
         } else {
@@ -419,6 +423,22 @@ public class DrawerActivity extends ActionBarActivity implements
             return false;
         }
 
+    }
+
+    private void unlockCard(int id) {
+        Log.d(TAG, "Unlocked card id: " + id);
+        try {
+            checkDb();
+            Card card = deck.get(id % 100);
+            card.locked = false;
+            ContentValues values = new ContentValues();
+            values.put("locked", 0);
+            String where = "_id='" + id + "'";
+            database.update(BackTalkDbHelper.TABLE_CARDS, values, where, null);
+        } catch (Exception e) {
+            Log.d(TAG, "AS;LDFJASLPDFJA;SLDKFJA;SLKDJF");
+            Log.d(TAG, e.getMessage());
+        }
     }
 
     private String normalize(String s) {

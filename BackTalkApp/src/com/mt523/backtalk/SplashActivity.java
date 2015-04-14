@@ -56,7 +56,7 @@ public class SplashActivity extends Activity implements
                 connection.getOutput().writeObject(outPacket);
                 return (ClientPacket) connection.getInput().readObject();
             } catch (Exception e) {
-                Log.e(MainActivity.class.getName(),
+                Log.e(SplashActivity.class.getName(),
                         "Packet read error:" + e.getMessage());
                 return null;
             }
