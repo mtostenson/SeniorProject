@@ -10,18 +10,19 @@
         android:layout_height="wrap_content"
         android:background="@drawable/guess_text_bg" >
 
-        <EditText
+        <com.mt523.backtalk.views.GuessInput
             android:id="@+id/input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@android:style/Widget.Holo.EditText"
             android:ems="10"
             android:inputType="text"
             android:lines="1"
             android:maxLines="1" >
 
             <requestFocus />
-        </EditText>
+        </com.mt523.backtalk.views.GuessInput>
     </FrameLayout>
 
     <Button
