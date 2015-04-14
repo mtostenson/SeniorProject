@@ -60,9 +60,7 @@ class BackTalkServer {
                 defaultDeck.add(new Card(resultSet.getInt("id"), resultSet
                         .getString("question"), resultSet.getString("answer"),
                         resultSet.getString("hint"), resultSet
-                                .getString("category"), resultSet
-                                .getInt("locked") == 1, resultSet
-                                .getInt("solved") == 1));
+                                .getString("category"), true, false));
                 // System.out.println(defaultDeck.lastElement().toString());
             }
 
