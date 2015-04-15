@@ -11,6 +11,8 @@ import java.util.Properties;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -88,6 +90,7 @@ public class DrawerActivity extends ActionBarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_drawer);
 
         getWindow().setSoftInputMode(
@@ -95,6 +98,7 @@ public class DrawerActivity extends ActionBarActivity implements
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
+
         mTitle = getTitle();
 
         // Ad things
@@ -109,7 +113,7 @@ public class DrawerActivity extends ActionBarActivity implements
         loadProperties();
 
         // Populate the deck
-        getDeck("places"); // TODO Store last category as shared pref
+        // getDeck(prefs.getString("category", "places"));
 
         // Set up recording controls
         controlFragment = new RecorderControlFragment();
@@ -350,6 +354,7 @@ public class DrawerActivity extends ActionBarActivity implements
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, deckFragment).commit();
         getSupportActionBar().setTitle(deck.get(0).getCategory());
+
     }
 
     @Override

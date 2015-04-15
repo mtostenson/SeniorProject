@@ -83,6 +83,9 @@ public class NavigationDrawerFragment extends Fragment {
     private String vc_name = "credits";
     private int credits = 0;
 
+    private SharedPreferences sp;
+    private SharedPreferences.Editor prefsEditor;
+
     public NavigationDrawerFragment() {
     }
 
@@ -93,8 +96,8 @@ public class NavigationDrawerFragment extends Fragment {
         // Read in the flag indicating whether or not the user has demonstrated
         // awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(getActivity());
+        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefsEditor = sp.edit();
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         tf = FontUtil.instance(getActivity().getBaseContext()).getFont();
@@ -112,11 +115,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
         database.close();
 
-        if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState
-                    .getInt(STATE_SELECTED_POSITION);
-            mFromSavedInstanceState = true;
-        }
+        mCurrentSelectedPosition = sp.getInt("position", 0);
 
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
@@ -273,6 +272,7 @@ public class NavigationDrawerFragment extends Fragment {
             // mCallbacks.onNavigationDrawerItemSelected(position);
             mCallbacks.onCategorySelected(categories[position].toLowerCase());
         }
+        prefsEditor.putInt("position", position).commit();
     }
 
     @Override
