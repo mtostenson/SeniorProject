@@ -9,10 +9,9 @@ import java.util.Locale;
 import java.util.Properties;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
@@ -69,6 +68,9 @@ public class DrawerActivity extends ActionBarActivity implements
     private BackTalkDbHelper dbHelper;
     private SQLiteDatabase database;
     private ArrayList<Card> deck;
+
+    // Level unlock listener
+    AdColonyAdListener unlockListener;
 
     // Ads and stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Properties properties;
@@ -358,7 +360,7 @@ public class DrawerActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onAdColonyAdAttemptFinished(AdColonyAd arg0) {
+    public void onAdColonyAdAttemptFinished(AdColonyAd ad) {
     }
 
     @Override
@@ -430,7 +432,7 @@ public class DrawerActivity extends ActionBarActivity implements
 
     }
 
-    private void unlockCard(int id) {
+    public void unlockCard(int id) {
         Log.d(TAG, "Unlocked card id: " + id);
         try {
             checkDb();
@@ -440,6 +442,9 @@ public class DrawerActivity extends ActionBarActivity implements
             values.put("locked", 0);
             String where = "_id='" + id + "'";
             database.update(BackTalkDbHelper.TABLE_CARDS, values, where, null);
+            if (deckFragment != null) {
+                deckFragment.adapter.notifyDataSetChanged();
+            }
         } catch (Exception e) {
             Log.d(TAG, "AS;LDFJASLPDFJA;SLDKFJA;SLKDJF");
             Log.d(TAG, e.getMessage());
@@ -451,8 +456,8 @@ public class DrawerActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onCardSelected(int id) {
-        cardFragment = CardFragment.newCard(deck.get(id));
+    public void onCardSelected(int index) {
+        cardFragment = CardFragment.newCard(deck.get(index));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, cardFragment)
                 .replace(R.id.bottom, controlFragment).addToBackStack(null)
@@ -464,4 +469,5 @@ public class DrawerActivity extends ActionBarActivity implements
         ((FrameLayout) findViewById(R.id.bottom))
                 .setVisibility(show ? View.VISIBLE : View.GONE);
     }
+
 }

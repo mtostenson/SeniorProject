@@ -16,7 +16,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +29,6 @@ import android.widget.TextView;
 
 import com.jirbo.adcolony.AdColonyAdListener;
 import com.jirbo.adcolony.AdColonyV4VCAd;
-import com.jirbo.adcolony.AdColonyVideoAd;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.FontUtil;
@@ -325,7 +323,6 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            Log.d("AdColony", "That's the right button");
             AdColonyV4VCAd ad = new AdColonyV4VCAd(getString(R.string.ZONE_ID))
                     .withListener((AdColonyAdListener) getActivity());
             ad.show();

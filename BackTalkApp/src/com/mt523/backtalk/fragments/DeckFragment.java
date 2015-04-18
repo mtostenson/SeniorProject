@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
+import com.mt523.backtalk.DrawerActivity;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.GridAdapter;
@@ -21,7 +24,7 @@ public class DeckFragment extends Fragment {
 
     private DeckInterface activity;
     private ArrayList<Card> deck;
-    private GridAdapter adapter;
+    public GridAdapter adapter;
 
     public static final DeckFragment instance(ArrayList<Card> deck) {
         DeckFragment deckFragment = new DeckFragment();
@@ -45,13 +48,19 @@ public class DeckFragment extends Fragment {
         adapter = new GridAdapter(getActivity().getBaseContext(), activity,
                 deck);
         grid.setAdapter(adapter);
-        // grid.setOnItemClickListener(new OnItemClickListener() {
-        // @Override
-        // public void onItemClick(AdapterView<?> parent, View v,
-        // int position, long id) {
-        // activity.onCardSelected(position);
-        // }
-        // });
+        grid.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                    int position, long id) {
+                if (!deck.get(position).locked) {
+                    activity.onCardSelected(position);
+                } else {
+                    new UnlockDialog((DrawerActivity) getActivity(), deck
+                            .get(position)).show(getActivity()
+                            .getSupportFragmentManager(), "unlock?");
+                }
+            }
+        });
         return rootView;
     }
 

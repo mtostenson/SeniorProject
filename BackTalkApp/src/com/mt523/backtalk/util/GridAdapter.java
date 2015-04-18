@@ -6,10 +6,10 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.fragments.DeckFragment.DeckInterface;
@@ -36,18 +36,18 @@ public class GridAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             button = inflater.inflate(R.layout.grid_item, parent, false);
-            ((Button) button).setTypeface(font);
+            ((TextView) button).setTypeface(font);
         } else {
-            button = (Button) convertView;
+            button = (TextView) convertView;
         }
-        ((Button) button).setText(Integer.toString(position + 1));
-        button.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                activity.onCardSelected(position);
-            }
-        });
+        ((TextView) button).setText(Integer.toString(position + 1));
+//        button.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                activity.onCardSelected(position);
+//            }
+//        });
         if (cards.get(position).locked) {
             button.setEnabled(false);
         }
