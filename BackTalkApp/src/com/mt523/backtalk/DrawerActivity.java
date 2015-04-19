@@ -22,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +45,11 @@ import com.mt523.backtalk.fragments.ProgressFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.BackTalkDbHelper;
+import com.mt523.backtalk.util.FontUtil;
 import com.mt523.backtalk.util.WavRecorder;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class DrawerActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -413,6 +418,11 @@ public class DrawerActivity extends ActionBarActivity implements
 
     @Override
     public boolean guess(String guess) {
+        Crouton.cancelAllCroutons();
+        View crouton = getLayoutInflater().inflate(R.layout.custom_crouton,
+                null);
+        TextView text = (TextView) crouton.findViewById(R.id.crouton_message);
+        text.setTypeface(FontUtil.instance(this).getFont());
         if (normalize(guess).equals(
                 normalize(cardFragment.getCard().getAnswer()))) {
             try {
@@ -422,11 +432,18 @@ public class DrawerActivity extends ActionBarActivity implements
                 // e.printStackTrace();
             }
             unlockCard(cardFragment.getCard().getId() + 1);
-            cardFragment.showMessage("Correct!");
+            // cardFragment.showMessage("Correct!");
+            crouton.setBackgroundColor(getResources().getColor(
+                    android.R.color.holo_green_light));
+            text.setText("Correct!");
+            Crouton.show(this, crouton);
             return true;
         } else {
-            // cardFragment.showMessage("Nope :(");
+            crouton.setBackgroundColor(getResources().getColor(
+                    android.R.color.holo_red_light));
             cardFragment.shake();
+            text.setText("Wrong!");
+            Crouton.show(this, crouton);
             return false;
         }
 

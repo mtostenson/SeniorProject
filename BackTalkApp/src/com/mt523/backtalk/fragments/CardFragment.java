@@ -14,6 +14,8 @@ import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.BtAnimations;
 import com.mt523.backtalk.util.FontUtil;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+
 public class CardFragment extends Fragment {
     private static final String TAG = CardFragment.class.getName();
 
@@ -69,6 +71,7 @@ public class CardFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        Crouton.cancelAllCroutons();
         activity.showControls(false);
     }
 
