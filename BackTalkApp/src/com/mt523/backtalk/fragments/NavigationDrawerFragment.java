@@ -33,6 +33,8 @@ import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.FontUtil;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation
  * drawer. See the <a href=
@@ -220,10 +222,10 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                Crouton.cancelAllCroutons();
                 if (!isAdded()) {
                     return;
                 }
-
                 if (!mUserLearnedDrawer) {
                     // The user manually opened the drawer; store this flag to
                     // prevent auto-showing
@@ -234,7 +236,6 @@ public class NavigationDrawerFragment extends Fragment {
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true)
                             .apply();
                 }
-
                 getActivity().supportInvalidateOptionsMenu(); // calls
                                                               // onPrepareOptionsMenu()
             }
@@ -254,7 +255,6 @@ public class NavigationDrawerFragment extends Fragment {
                 mDrawerToggle.syncState();
             }
         });
-
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
@@ -321,14 +321,12 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         if (item.getItemId() == R.id.action_example) {
             AdColonyV4VCAd ad = new AdColonyV4VCAd(getString(R.string.ZONE_ID))
                     .withListener((AdColonyAdListener) getActivity());
             ad.show();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

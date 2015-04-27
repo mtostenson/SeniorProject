@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.mt523.backtalk.DrawerActivity;
 import com.mt523.backtalk.R;
@@ -25,6 +26,7 @@ public class DeckFragment extends Fragment {
     private DeckInterface activity;
     private ArrayList<Card> deck;
     public GridAdapter adapter;
+    public GridView grid;
 
     public static final DeckFragment instance(ArrayList<Card> deck) {
         DeckFragment deckFragment = new DeckFragment();
@@ -36,17 +38,11 @@ public class DeckFragment extends Fragment {
     public void onResume() {
         Log.d(TAG, "onResume()");
         super.onResume();
-        adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_deck, container,
-                false);
-        GridView grid = (GridView) rootView.findViewById(R.id.deck_grid);
-        adapter = new GridAdapter(getActivity().getBaseContext(), activity,
-                deck);
+    public void setAdapter(GridAdapter adapterIn) {
+        adapter = new GridAdapter(getActivity().getBaseContext(), deck,
+                activity);
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -61,6 +57,16 @@ public class DeckFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_deck, container,
+                false);
+        grid = (GridView) rootView.findViewById(R.id.deck_grid);
+        setAdapter(new GridAdapter(getActivity().getBaseContext(), deck,
+                activity));
         return rootView;
     }
 

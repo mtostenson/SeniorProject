@@ -14,7 +14,20 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
+
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/BtActionBar</item>
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/BtActionBar</item>
+    </style>
+
+    <!-- Action bar styles -->
+    <style name="BtActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/background</item>
+
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/background</item>
     </style>
 
     <style name="ShadowText">

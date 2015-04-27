@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Properties;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -22,7 +21,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,7 +47,6 @@ import com.mt523.backtalk.util.FontUtil;
 import com.mt523.backtalk.util.WavRecorder;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class DrawerActivity extends ActionBarActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -61,7 +58,7 @@ public class DrawerActivity extends ActionBarActivity implements
 
     private static final String TAG = DrawerActivity.class.getName();
 
-    // My fragments ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // My fragments ------------------------------------------------------------
     private RecorderControlFragment controlFragment;
     private DeckFragment deckFragment;
     private CardFragment cardFragment;
@@ -74,10 +71,7 @@ public class DrawerActivity extends ActionBarActivity implements
     private SQLiteDatabase database;
     private ArrayList<Card> deck;
 
-    // Level unlock listener
-    AdColonyAdListener unlockListener;
-
-    // Ads and stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Ads and stuff -----------------------------------------------------------
     Properties properties;
     int credits;
     String vc_name = "credits";
@@ -329,7 +323,8 @@ public class DrawerActivity extends ActionBarActivity implements
                     cursor.getInt(cursor
                             .getColumnIndex(BackTalkDbHelper.COLUMN_SOLVED)) == 1));
         }
-        deck = newDeck;
+        deck = new ArrayList<Card>();
+        deck.addAll(newDeck);
 
         /*
          * // Set up card fragment cardFragment =
@@ -446,25 +441,21 @@ public class DrawerActivity extends ActionBarActivity implements
             Crouton.show(this, crouton);
             return false;
         }
-
     }
 
     public void unlockCard(int id) {
-        Log.d(TAG, "Unlocked card id: " + id);
+        int index = id % 100;
+        ((TextView)deckFragment.grid.getChildAt(index)).setEnabled(true);
         try {
             checkDb();
-            Card card = deck.get(id % 100);
-            card.locked = false;
+            deck.get(index).locked = false;
+            Log.d(TAG, "Unlocked card id: " + id);
             ContentValues values = new ContentValues();
             values.put("locked", 0);
             String where = "_id='" + id + "'";
             database.update(BackTalkDbHelper.TABLE_CARDS, values, where, null);
-            if (deckFragment != null) {
-                deckFragment.adapter.notifyDataSetChanged();
-            }
         } catch (Exception e) {
-            Log.d(TAG, "AS;LDFJASLPDFJA;SLDKFJA;SLKDJF");
-            Log.d(TAG, e.getMessage());
+            e.printStackTrace();
         }
     }
 
