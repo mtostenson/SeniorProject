@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="horizontal" >
+    android:layout_height="128dp"
+    android:layout_gravity="center"
+    android:gravity="center" >
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"        
-        android:indeterminate="true"
+    <TextView
+        android:id="@+id/progress_text"
+        style="@style/ShadowText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-<!-- 
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Processing..."
+        android:textSize="48sp" />
+
+    <!--
     <Button
         android:id="@+id/btnCancel"
         style="@style/button_text"
@@ -21,5 +23,6 @@
         android:background="@drawable/button"
         
         android:text="CANCEL" />
- -->
-</LinearLayout>
+    -->
+
+</RelativeLayout>

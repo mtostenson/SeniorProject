@@ -43,7 +43,7 @@ public class UnlockDialog extends DialogFragment {
                                 ad.show();
                             }
                         })
-                .setNegativeButton("Nevermind",
+                .setNegativeButton("No thanks",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog

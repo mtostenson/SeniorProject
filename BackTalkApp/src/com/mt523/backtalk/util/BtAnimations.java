@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 
 public class BtAnimations {
 
@@ -38,4 +40,13 @@ public class BtAnimations {
         // set.setInterpolator(new AccelerateDecelerateInterpolator());
         set.start();
     }
+    
+    public static ScaleAnimation pulse(int pDuration) {
+        ScaleAnimation pulse = new ScaleAnimation(1f, 1.1f, 1f, 1.1f,
+              Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
+        pulse.setRepeatCount(ScaleAnimation.INFINITE);
+        pulse.setRepeatMode(ScaleAnimation.REVERSE);
+        pulse.setDuration(pDuration);
+        return pulse;
+     }
 }

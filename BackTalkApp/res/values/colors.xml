@@ -8,6 +8,9 @@
     <color name="blue1">#33ADFF</color>
     <color name="blue2">#5CBEFF</color>
 
+    <color name="t_blue1">#F833ADFF</color>
+    <color name="t_blue2">#F85CBEFF</color>
+    
     <color name="gray">#DDDDDD</color>
     <color name="gray2">#EEEEEE</color>
     

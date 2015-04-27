@@ -244,7 +244,7 @@ public class DrawerActivity extends ActionBarActivity implements
         recorder.stop();
         ProgressFragment progressFragment = new ProgressFragment();
         recorder.SetReverseProgressUpdater(progressFragment);
-        getFragmentManager().beginTransaction().addToBackStack(null)
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.bottom, progressFragment).commit();
         try {
@@ -445,7 +445,7 @@ public class DrawerActivity extends ActionBarActivity implements
 
     public void unlockCard(int id) {
         int index = id % 100;
-        ((TextView)deckFragment.grid.getChildAt(index)).setEnabled(true);
+        ((TextView) deckFragment.grid.getChildAt(index)).setEnabled(true);
         try {
             checkDb();
             deck.get(index).locked = false;

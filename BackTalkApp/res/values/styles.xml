@@ -24,10 +24,10 @@
 
     <!-- Action bar styles -->
     <style name="BtActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/background</item>
+        <item name="android:background">@drawable/actionbar_background</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@drawable/background</item>
+        <item name="background">@drawable/actionbar_background</item>
     </style>
 
     <style name="ShadowText">
