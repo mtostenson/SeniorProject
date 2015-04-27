@@ -21,7 +21,9 @@ public class GridAdapter extends ArrayAdapter<Card> {
     private Context context;
     private DeckInterface activity;
     private ArrayList<Card> cards;
-    public ArrayList<TextView> buttons;
+
+    private Typeface font;
+    private LayoutInflater inflater;
 
     public GridAdapter(Context context, ArrayList<Card> deck,
             DeckInterface activity) {
@@ -29,32 +31,25 @@ public class GridAdapter extends ArrayAdapter<Card> {
         this.context = context;
         this.activity = activity;
         this.cards = deck;
-        buttons = new ArrayList<TextView>();
+        font = FontUtil.instance(context).getFont();
+        inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View button;
         if (convertView == null) {
-            Typeface font = FontUtil.instance(context).getFont();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             button = inflater.inflate(R.layout.grid_item, parent, false);
-            ((TextView) button).setTypeface(font);
         } else {
             button = (TextView) convertView;
         }
+        ((TextView) button).setTypeface(font);
         ((TextView) button).setText(Integer.toString(position + 1));
-
         if (cards.get(position).locked) {
             button.setEnabled(false);
         }
-        buttons.add((TextView) button);
         return button;
-    }
-
-    public void enableButton(int index) {
-        buttons.get(index).setEnabled(true);
     }
 
     @Override

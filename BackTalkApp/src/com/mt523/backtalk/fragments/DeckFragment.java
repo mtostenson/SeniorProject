@@ -28,7 +28,7 @@ public class DeckFragment extends Fragment {
     public GridAdapter adapter;
     public GridView grid;
 
-    public static final DeckFragment instance(ArrayList<Card> deck) {
+    public static DeckFragment instance(ArrayList<Card> deck) {
         DeckFragment deckFragment = new DeckFragment();
         deckFragment.deck = deck;
         return deckFragment;
@@ -40,7 +40,7 @@ public class DeckFragment extends Fragment {
         super.onResume();
     }
 
-    public void setAdapter(GridAdapter adapterIn) {
+    public void setupAdapter() {
         adapter = new GridAdapter(getActivity().getBaseContext(), deck,
                 activity);
         grid.setAdapter(adapter);
@@ -65,8 +65,7 @@ public class DeckFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_deck, container,
                 false);
         grid = (GridView) rootView.findViewById(R.id.deck_grid);
-        setAdapter(new GridAdapter(getActivity().getBaseContext(), deck,
-                activity));
+        setupAdapter();
         return rootView;
     }
 

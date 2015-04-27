@@ -21,6 +21,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -445,11 +447,14 @@ public class DrawerActivity extends ActionBarActivity implements
 
     public void unlockCard(int id) {
         int index = id % 100;
-        ((TextView) deckFragment.grid.getChildAt(index)).setEnabled(true);
+        ((TextView) deckFragment.grid.getChildAt(index
+                - deckFragment.grid.getFirstVisiblePosition()))
+                .setEnabled(true);
+        deck.get(index).locked = false;
+        deckFragment.adapter.notifyDataSetChanged();
+        Log.d(TAG, "Unlocked card id: " + id);
         try {
             checkDb();
-            deck.get(index).locked = false;
-            Log.d(TAG, "Unlocked card id: " + id);
             ContentValues values = new ContentValues();
             values.put("locked", 0);
             String where = "_id='" + id + "'";
@@ -476,6 +481,19 @@ public class DrawerActivity extends ActionBarActivity implements
     public void showControls(boolean show) {
         ((FrameLayout) findViewById(R.id.bottom))
                 .setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && !mNavigationDrawerFragment.isDrawerOpen()
+                && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            ((DrawerLayout) findViewById(R.id.drawer_layout))
+                    .openDrawer(Gravity.LEFT);
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
 }

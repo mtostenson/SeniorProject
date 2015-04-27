@@ -1,5 +1,8 @@
 package com.mt523.backtalk.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -17,6 +20,20 @@ public class BtAnimations {
 
     public static void shake(View v) {
         AnimatorSet set = new AnimatorSet();
+
+        List<Animator> phases = new ArrayList<Animator>();
+
+        int distance = -25;
+        int duration = 25;
+
+        for (int i = 0; i < 9; i++) {
+            phases.add(ObjectAnimator.ofFloat(v, "translationX", distance)
+                    .setDuration(duration));
+            distance = (distance < 0) ? distance * -1 : (distance * -1) + 5; 
+            duration += 5;
+        }
+
+        /*
         Animator phase1 = (ObjectAnimator.ofFloat(v, "translationX", -25)
                 .setDuration(25));
         Animator phase2 = (ObjectAnimator.ofFloat(v, "translationX", 25)
@@ -37,16 +54,18 @@ public class BtAnimations {
                 .setDuration(65));
         set.playSequentially(phase1, phase2, phase3, phase4, phase5, phase6,
                 phase7, phase8, phase9);
-        // set.setInterpolator(new AccelerateDecelerateInterpolator());
+        */
+        set.playSequentially(phases);
         set.start();
     }
-    
+
     public static ScaleAnimation pulse(int pDuration) {
         ScaleAnimation pulse = new ScaleAnimation(1f, 1.1f, 1f, 1.1f,
-              Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
+                Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF,
+                .5f);
         pulse.setRepeatCount(ScaleAnimation.INFINITE);
         pulse.setRepeatMode(ScaleAnimation.REVERSE);
         pulse.setDuration(pDuration);
         return pulse;
-     }
+    }
 }
