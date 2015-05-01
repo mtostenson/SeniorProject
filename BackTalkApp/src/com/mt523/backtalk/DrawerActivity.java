@@ -13,6 +13,7 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,7 +22,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jirbo.adcolony.AdColony;
 import com.jirbo.adcolony.AdColonyAd;
@@ -103,6 +102,17 @@ public class DrawerActivity extends ActionBarActivity implements
                 .findFragmentById(R.id.navigation_drawer);
 
         mTitle = getTitle();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.action_bar_layout);
+        View customActionBar = actionBar.getCustomView();
+        Typeface typeface = FontUtil.instance(DrawerActivity.this).getFont();
+        TextView label1 = (TextView) customActionBar.findViewById(R.id.label1);
+        TextView label2 = (TextView) customActionBar.findViewById(R.id.label2);
+        label1.setTypeface(typeface);
+        label2.setTypeface(typeface);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
+                | ActionBar.DISPLAY_SHOW_HOME);
 
         // Ad things
         AdColony.configure(this, "version:1.0,store:google",
@@ -179,17 +189,14 @@ public class DrawerActivity extends ActionBarActivity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_hint) {
-            String toastBody = "Not enough credits";
-            if (credits > 0) {
-                toastBody = cardFragment.getCard().getHint();
-                updateCredits(--credits);
-            }
-            Toast.makeText(DrawerActivity.this, toastBody, Toast.LENGTH_SHORT)
-                    .show();
-        }
+
+        /*
+         * if (id == R.id.action_settings) { return true; } else if (id ==
+         * R.id.action_hint) { String toastBody = "Not enough credits"; if
+         * (credits > 0) { toastBody = cardFragment.getCard().getHint();
+         * updateCredits(--credits); } Toast.makeText(DrawerActivity.this,
+         * toastBody, Toast.LENGTH_SHORT) .show(); }
+         */
         return super.onOptionsItemSelected(item);
     }
 
@@ -357,7 +364,7 @@ public class DrawerActivity extends ActionBarActivity implements
                 getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, deckFragment).commit();
-        getSupportActionBar().setTitle(deck.get(0).getCategory());
+        // getSupportActionBar().setTitle(deck.get(0).getCategory());
 
     }
 
@@ -488,8 +495,7 @@ public class DrawerActivity extends ActionBarActivity implements
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && !mNavigationDrawerFragment.isDrawerOpen()
                 && getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            ((DrawerLayout) findViewById(R.id.drawer_layout))
-                    .openDrawer(Gravity.LEFT);
+            mNavigationDrawerFragment.openDrawer();
             return true;
         } else {
             return super.onKeyDown(keyCode, event);

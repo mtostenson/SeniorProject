@@ -1,13 +1,16 @@
 package com.mt523.backtalk.fragments;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -16,6 +19,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,11 +28,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jirbo.adcolony.AdColonyAdListener;
-import com.jirbo.adcolony.AdColonyV4VCAd;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.FontUtil;
@@ -79,7 +82,7 @@ public class NavigationDrawerFragment extends Fragment {
     private SQLiteDatabase database;
     private BackTalkDbHelper dbHelper;
 
-    private String[] categories;
+    private ArrayList<String> categories;
     private String vc_name = "credits";
     private int credits = 0;
 
@@ -107,11 +110,11 @@ public class NavigationDrawerFragment extends Fragment {
         database = dbHelper.getReadableDatabase();
         String query = "SELECT DISTINCT category FROM cards;";
         Cursor cursor = database.rawQuery(query, new String[] {});
-        categories = new String[cursor.getCount()];
+        categories = new ArrayList<String>();
         while (cursor.moveToNext()) {
-            categories[cursor.getPosition()] = cursor.getString(
+            categories.add(cursor.getString(
                     cursor.getColumnIndex(BackTalkDbHelper.COLUMN_CATEGORY))
-                    .toUpperCase(Locale.ENGLISH);
+                    .toUpperCase(Locale.ENGLISH));
         }
         database.close();
 
@@ -147,12 +150,65 @@ public class NavigationDrawerFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.categories_label))
                 .setTypeface(tf);
         ((TextView) rootView.findViewById(R.id.options_label)).setTypeface(tf);
-        mCategoryList.setAdapter(new ArrayAdapter<String>(getActionBar()
-                .getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1, categories));
+        /*
+         * mCategoryList.setAdapter(new ArrayAdapter<String>(getActionBar()
+         * .getThemedContext(), android.R.layout.simple_list_item_activated_1,
+         * android.R.id.text1, categories));
+         */
+        mCategoryList.setAdapter(new CategoryListAdapter(getActionBar()
+                .getThemedContext(), categories));
         mCategoryList.setItemChecked(mCurrentSelectedPosition, true);
         return rootView;
+    }
+
+    private class CategoryListAdapter extends ArrayAdapter<String> {
+
+        private ArrayList<String> values;
+
+        public CategoryListAdapter(Context context, ArrayList<String> values) {
+            super(context, 0, values);
+            this.values = values;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            TextView categoryLabel = null;
+            ImageView icon = null;
+
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) parent.getContext()
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.category_list_item,
+                        null);
+            }
+            categoryLabel = (TextView) convertView
+                    .findViewById(R.id.category_label);
+            icon = (ImageView) convertView
+                    .findViewById(R.id.category_list_item_icon);
+            String currentCategory = values.get(position);
+            categoryLabel.setText(currentCategory);
+            int drawable = R.drawable.ic_launcher;
+            switch (currentCategory.toLowerCase()) {
+            case "places":
+                drawable = R.drawable.map;
+                break;
+            case "movies/tv":
+                drawable = R.drawable.television;
+                break;
+            case "music":
+                drawable = R.drawable.note;
+                break;
+            case "food/drink":
+                drawable = R.drawable.cutlery;
+                break;
+            case "sports/leisure":
+                drawable = R.drawable.soccer;
+                break;
+            }
+            icon.setImageDrawable(getResources().getDrawable(drawable));
+            return convertView;
+        }
     }
 
     @Override
@@ -166,6 +222,10 @@ public class NavigationDrawerFragment extends Fragment {
     public boolean isDrawerOpen() {
         return mDrawerLayout != null
                 && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    public void openDrawer() {
+        mDrawerLayout.openDrawer(Gravity.LEFT);
     }
 
     /**
@@ -268,7 +328,8 @@ public class NavigationDrawerFragment extends Fragment {
         }
         if (mCallbacks != null) {
             // mCallbacks.onNavigationDrawerItemSelected(position);
-            mCallbacks.onCategorySelected(categories[position].toLowerCase());
+            mCallbacks.onCategorySelected(categories.get(position)
+                    .toLowerCase());
         }
         prefsEditor.putInt("position", position).commit();
     }
@@ -321,17 +382,12 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if (item.getItemId() == R.id.action_example) {
-            AdColonyV4VCAd ad = new AdColonyV4VCAd(getString(R.string.ZONE_ID))
-                    .withListener((AdColonyAdListener) getActivity());
-            ad.show();
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
     // Set the list of categories for the drawer
-    public void setCategories(String[] categories) {
+    public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }
 

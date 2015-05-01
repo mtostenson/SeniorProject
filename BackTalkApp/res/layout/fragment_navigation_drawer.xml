@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange1"
+    android:background="@color/orange1_5"
     tools:context="com.mt523.backtalk.fragments.NavigationDrawerFragment" >
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_below="@id/categories_label"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="4dp" />
 
     <TextView
         android:id="@+id/options_label"

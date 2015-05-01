@@ -20,41 +20,15 @@ public class BtAnimations {
 
     public static void shake(View v) {
         AnimatorSet set = new AnimatorSet();
-
         List<Animator> phases = new ArrayList<Animator>();
-
         int distance = -25;
         int duration = 25;
-
         for (int i = 0; i < 9; i++) {
             phases.add(ObjectAnimator.ofFloat(v, "translationX", distance)
                     .setDuration(duration));
-            distance = (distance < 0) ? distance * -1 : (distance * -1) + 5; 
+            distance = (distance < 0) ? distance * -1 : (distance * -1) + 5;
             duration += 5;
         }
-
-        /*
-        Animator phase1 = (ObjectAnimator.ofFloat(v, "translationX", -25)
-                .setDuration(25));
-        Animator phase2 = (ObjectAnimator.ofFloat(v, "translationX", 25)
-                .setDuration(30));
-        Animator phase3 = (ObjectAnimator.ofFloat(v, "translationX", -20)
-                .setDuration(35));
-        Animator phase4 = (ObjectAnimator.ofFloat(v, "translationX", 20)
-                .setDuration(40));
-        Animator phase5 = (ObjectAnimator.ofFloat(v, "translationX", -15)
-                .setDuration(45));
-        Animator phase6 = (ObjectAnimator.ofFloat(v, "translationX", 15)
-                .setDuration(50));
-        Animator phase7 = (ObjectAnimator.ofFloat(v, "translationX", -10)
-                .setDuration(55));
-        Animator phase8 = (ObjectAnimator.ofFloat(v, "translationX", 5)
-                .setDuration(60));
-        Animator phase9 = (ObjectAnimator.ofFloat(v, "translationX", 0)
-                .setDuration(65));
-        set.playSequentially(phase1, phase2, phase3, phase4, phase5, phase6,
-                phase7, phase8, phase9);
-        */
         set.playSequentially(phases);
         set.start();
     }

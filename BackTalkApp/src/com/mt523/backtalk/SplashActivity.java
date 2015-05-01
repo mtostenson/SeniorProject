@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.packets.client.ClientPacket;
@@ -17,6 +18,7 @@ import com.mt523.backtalk.packets.server.CardRequest.CardTier;
 import com.mt523.backtalk.packets.server.ServerPacket;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.BtConnection;
+import com.mt523.backtalk.util.FontUtil;
 
 public class SplashActivity extends Activity implements
         ClientPacket.IBackTalkClient {
@@ -27,7 +29,11 @@ public class SplashActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_splash);
+        ((TextView) findViewById(R.id.splash_banner)).setTypeface(FontUtil
+                .instance(SplashActivity.this).getFont());
+
         dbHelper = new BackTalkDbHelper(SplashActivity.this);
         database = dbHelper.getWritableDatabase();
         database = dbHelper.getReadableDatabase();

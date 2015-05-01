@@ -4,14 +4,13 @@
     <color name="green1">#33B054</color>
     <color name="green2">#8ACA58</color>
     <color name="orange1">#FF7112</color>
+    <color name="orange1_5">#FF8737</color>
     <color name="orange2">#FF9D5C</color>
     <color name="blue1">#33ADFF</color>
     <color name="blue2">#5CBEFF</color>
-
     <color name="t_blue1">#F833ADFF</color>
     <color name="t_blue2">#F85CBEFF</color>
-    
     <color name="gray">#DDDDDD</color>
     <color name="gray2">#EEEEEE</color>
-    
+
 </resources>
