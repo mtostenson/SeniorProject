@@ -33,12 +33,10 @@ public class SplashActivity extends Activity implements
         setContentView(R.layout.activity_splash);
         ((TextView) findViewById(R.id.splash_banner)).setTypeface(FontUtil
                 .instance(SplashActivity.this).getFont());
-
         dbHelper = new BackTalkDbHelper(SplashActivity.this);
         database = dbHelper.getWritableDatabase();
         database = dbHelper.getReadableDatabase();
         String query = "SELECT DISTINCT category FROM cards;";
-
         if (database.rawQuery(query, new String[] {}).getCount() <= 0) {
             new ServerTransaction(new CardRequest(CardTier.DEFAULT)).execute();
         } else {
