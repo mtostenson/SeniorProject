@@ -10,7 +10,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -33,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mt523.backtalk.R;
+import com.mt523.backtalk.util.AssetMapper;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.FontUtil;
 
@@ -200,32 +200,11 @@ public class NavigationDrawerFragment extends Fragment {
                     .findViewById(R.id.category_list_item_icon);
             String currentCategory = values.get(position);
             categoryLabel.setText(currentCategory);
-            icon.setImageDrawable(getCategoryDrawable(currentCategory));
+            icon.setImageDrawable(AssetMapper.getCategoryDrawable(getActivity()
+                    .getApplicationContext(), currentCategory));
             return convertView;
         }
 
-    }
-
-    public Drawable getCategoryDrawable(String currentCategory) {
-        int drawable = R.drawable.ic_launcher;
-        switch (currentCategory.toLowerCase()) {
-        case "places":
-            drawable = R.drawable.places;
-            break;
-        case "movies/tv":
-            drawable = R.drawable.television;
-            break;
-        case "music":
-            drawable = R.drawable.note;
-            break;
-        case "food/drink":
-            drawable = R.drawable.cutlery;
-            break;
-        case "sports/leisure":
-            drawable = R.drawable.soccer;
-            break;
-        }
-        return getResources().getDrawable(drawable);
     }
 
     @Override
@@ -350,8 +329,9 @@ public class NavigationDrawerFragment extends Fragment {
 
             // Switch the icon around
             categoryIcon.setVisibility(View.INVISIBLE);
-            categoryIcon.setImageDrawable(getCategoryDrawable(categories.get(
-                    position).toLowerCase()));
+            categoryIcon.setImageDrawable(AssetMapper.getCategoryDrawable(
+                    getActivity().getApplicationContext(),
+                    categories.get(position).toLowerCase()));
             categoryIcon.setVisibility(View.VISIBLE);
         }
         prefsEditor.putInt("position", position).commit();

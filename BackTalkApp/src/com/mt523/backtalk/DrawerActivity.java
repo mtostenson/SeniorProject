@@ -13,7 +13,6 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +28,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jirbo.adcolony.AdColony;
@@ -44,6 +44,7 @@ import com.mt523.backtalk.fragments.NavigationDrawerFragment;
 import com.mt523.backtalk.fragments.ProgressFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.Card;
+import com.mt523.backtalk.util.AssetMapper;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.FontUtil;
 import com.mt523.backtalk.util.WavRecorder;
@@ -68,6 +69,7 @@ public class DrawerActivity extends ActionBarActivity implements
 
     // Views -------------------------------------------------------------------
     private ImageView categoryIcon;
+    private RelativeLayout tint;
 
     private WavRecorder recorder;
     private MediaPlayer player;
@@ -104,6 +106,8 @@ public class DrawerActivity extends ActionBarActivity implements
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
+
+        tint = (RelativeLayout) findViewById(R.id.drawer_tint);
 
         mTitle = getTitle();
 
@@ -358,6 +362,10 @@ public class DrawerActivity extends ActionBarActivity implements
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, deckFragment).commit();
 
+        if (tint != null) {
+            tint.setBackgroundColor(AssetMapper.getCategoryColor(
+                    getBaseContext(), category));
+        }
         // getSupportActionBar().setTitle(deck.get(0).getCategory());
 
     }

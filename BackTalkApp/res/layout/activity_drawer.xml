@@ -18,9 +18,10 @@
         android:background="@drawable/geo_pattern" >
 
         <RelativeLayout
+            android:id="@+id/drawer_tint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background" >
+            android:background="@color/places" >
 
             <FrameLayout
                 android:id="@+id/top"
@@ -35,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:visibility="gone"
                 android:padding="4dp" >
             </FrameLayout>
 

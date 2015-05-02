@@ -12,5 +12,11 @@
     <color name="t_blue2">#F85CBEFF</color>
     <color name="gray">#DDDDDD</color>
     <color name="gray2">#EEEEEE</color>
+    
+    <color name="places">#F833ADFF</color>
+    <color name="movies">#F80B8500</color>
+    <color name="music">#F88941CC</color>
+    <color name="food">#F88B5A2B</color>
+    <color name="sports">#F8FFC824</color>
 
 </resources>
