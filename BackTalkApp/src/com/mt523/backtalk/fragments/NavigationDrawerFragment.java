@@ -191,7 +191,7 @@ public class NavigationDrawerFragment extends Fragment {
             int drawable = R.drawable.ic_launcher;
             switch (currentCategory.toLowerCase()) {
             case "places":
-                drawable = R.drawable.map;
+                drawable = R.drawable.places;
                 break;
             case "movies/tv":
                 drawable = R.drawable.television;
