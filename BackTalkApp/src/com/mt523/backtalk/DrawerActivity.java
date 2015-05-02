@@ -165,6 +165,17 @@ public class DrawerActivity extends ActionBarActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
+
+        if (tint != null) {
+            // tint.setBackgroundColor(AssetMapper.getCategoryColor(
+            // getBaseContext(), category));
+            ColorAnimator.ofBackgroundColor(
+                    tint,
+                    AssetMapper.getCategoryColor(getBaseContext(), deck.get(0)
+                            .getCategory().toLowerCase())).start();
+            ;
+        }
+
         // actionBar.setTitle(mTitle);
     }
 
@@ -362,15 +373,6 @@ public class DrawerActivity extends ActionBarActivity implements
                 getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, deckFragment).commit();
-
-        if (tint != null) {
-            // tint.setBackgroundColor(AssetMapper.getCategoryColor(
-            // getBaseContext(), category));
-            ColorAnimator.ofBackgroundColor(tint,
-                    AssetMapper.getCategoryColor(getBaseContext(), category))
-                    .start();
-            ;
-        }
         // getSupportActionBar().setTitle(deck.get(0).getCategory());
 
     }
@@ -465,6 +467,7 @@ public class DrawerActivity extends ActionBarActivity implements
                 - deckFragment.grid.getFirstVisiblePosition()))
                 .setEnabled(true);
         deck.get(index).locked = false;
+        deckFragment.grid.invalidateViews();
         deckFragment.adapter.notifyDataSetChanged();
         Log.d(TAG, "Unlocked card id: " + id);
         try {

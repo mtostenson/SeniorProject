@@ -39,12 +39,12 @@ public class GridAdapter extends ArrayAdapter<Card> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View button;
-        if (convertView == null) {
+//        if (convertView == null) {
             button = inflater.inflate(R.layout.grid_item, parent, false);
             ((TextView) button).setTypeface(font);
-        } else {
-            button = (TextView) convertView;
-        }
+//        } else {
+//            button = (TextView) convertView;
+//        }
         if (cards.get(position).locked) {
             button.setEnabled(false);
         }

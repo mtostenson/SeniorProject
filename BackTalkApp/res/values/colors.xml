@@ -12,11 +12,12 @@
     <color name="t_blue2">#F85CBEFF</color>
     <color name="gray">#DDDDDD</color>
     <color name="gray2">#EEEEEE</color>
-    
+
+    <!-- Categorical colors -->
     <color name="places">#F833ADFF</color>
-    <color name="movies">#F88941CC</color>
-    <color name="music">#F8FFC824</color>
-    <color name="food">#F88B5A2B</color>
-    <color name="sports">#F80B8500</color>
+    <color name="movies">#F8A282BF</color>
+    <color name="music">#F88B5A2B</color>
+    <color name="food">#F8EBE86A</color>
+    <color name="sports">#F860D662</color>
 
 </resources>
