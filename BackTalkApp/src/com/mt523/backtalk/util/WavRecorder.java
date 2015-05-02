@@ -205,7 +205,8 @@ public class WavRecorder implements OnRecordPositionUpdateListener {
     // Reverses samples from original recording and writes to file -------------
     public void reverse() throws IOException {
         reverser = new Reverser();
-        reverser.execute();
+        reverser.setPriority(Thread.MAX_PRIORITY);
+        reverser.start();
     }
 
     // Stops recording and sets state to STOPPED -------------------------------
@@ -243,15 +244,13 @@ public class WavRecorder implements OnRecordPositionUpdateListener {
     }
 
     // Reverser class to process audio async -----------------------------------
-    private class Reverser extends AsyncTask<Void, Integer, Void> {
+    private class Reverser extends Thread {
 
         int SAMPLE_SIZE;
         long dataLength;
         long locater;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+        public Reverser() {
             try {
                 SAMPLE_SIZE = CHANNELS * SAMPLES / 8;
                 dataLength = writerForward.length() - SAMPLE_SIZE;
@@ -263,7 +262,8 @@ public class WavRecorder implements OnRecordPositionUpdateListener {
         }
 
         @Override
-        protected Void doInBackground(Void... arg0) {
+        public void run() {
+            super.run();
             try {
                 while (locater >= dataBegin) {
                     byte[] currentSample = new byte[SAMPLE_SIZE];
@@ -274,26 +274,10 @@ public class WavRecorder implements OnRecordPositionUpdateListener {
                     // double completion = (dataLength - locater) / dataLength;
                     // reverser.onProgressUpdate((int) (completion * 100));
                 }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            reverseProgressUpdater.onReverseUpdate(values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            try {
                 writerForward.close();
                 writerReverse.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
             reverseProgressUpdater.onReverseCompleted();
         }
