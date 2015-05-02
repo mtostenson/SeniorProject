@@ -72,6 +72,7 @@ public class NavigationDrawerFragment extends Fragment {
     private View rootView;
     private ListView mCategoryList;
     private View mFragmentContainerView;
+    private ImageView categoryIcon;
 
     private Typeface tf;
 
@@ -104,6 +105,17 @@ public class NavigationDrawerFragment extends Fragment {
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         tf = FontUtil.instance(getActivity().getBaseContext()).getFont();
+
+        ActionBar actionBar = ((ActionBarActivity) getActivity())
+                .getSupportActionBar();
+        actionBar.setCustomView(R.layout.action_bar_layout);
+        View customActionBar = actionBar.getCustomView();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
+                | ActionBar.DISPLAY_SHOW_HOME);
+        TextView label1 = (TextView) customActionBar.findViewById(R.id.label1);
+        categoryIcon = (ImageView) customActionBar
+                .findViewById(R.id.category_icon);
+        label1.setTypeface(tf);
 
         // Set up the categories
         dbHelper = new BackTalkDbHelper(getActivity().getBaseContext());
@@ -193,7 +205,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
     }
-    
+
     public Drawable getCategoryDrawable(String currentCategory) {
         int drawable = R.drawable.ic_launcher;
         switch (currentCategory.toLowerCase()) {
@@ -335,6 +347,12 @@ public class NavigationDrawerFragment extends Fragment {
             // mCallbacks.onNavigationDrawerItemSelected(position);
             mCallbacks.onCategorySelected(categories.get(position)
                     .toLowerCase());
+
+            // Switch the icon around
+            categoryIcon.setVisibility(View.INVISIBLE);
+            categoryIcon.setImageDrawable(getCategoryDrawable(categories.get(
+                    position).toLowerCase()));
+            categoryIcon.setVisibility(View.VISIBLE);
         }
         prefsEditor.putInt("position", position).commit();
     }
@@ -422,6 +440,7 @@ public class NavigationDrawerFragment extends Fragment {
          */
 
         void onCategorySelected(String category);
+
     }
 
 }

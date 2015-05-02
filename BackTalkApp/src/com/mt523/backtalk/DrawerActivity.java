@@ -107,17 +107,6 @@ public class DrawerActivity extends ActionBarActivity implements
 
         mTitle = getTitle();
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setCustomView(R.layout.action_bar_layout);
-        View customActionBar = actionBar.getCustomView();
-        Typeface typeface = FontUtil.instance(DrawerActivity.this).getFont();
-        TextView label1 = (TextView) customActionBar.findViewById(R.id.label1);
-        categoryIcon = (ImageView) customActionBar
-                .findViewById(R.id.category_icon);
-        label1.setTypeface(typeface);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME);
-
         // Ad things
         AdColony.configure(this, "version:1.0,store:google",
                 getString(R.string.APP_ID), getString(R.string.ZONE_ID));
@@ -171,14 +160,6 @@ public class DrawerActivity extends ActionBarActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        if (mNavigationDrawerFragment.isDrawerOpen()) {
-            categoryIcon.setVisibility(View.INVISIBLE);
-        } else {
-            categoryIcon.setImageDrawable(mNavigationDrawerFragment
-                    .getCategoryDrawable(deck.get(0).getCategory()
-                            .toLowerCase()));
-            categoryIcon.setVisibility(View.VISIBLE);
-        }
         // actionBar.setTitle(mTitle);
     }
 
@@ -376,6 +357,7 @@ public class DrawerActivity extends ActionBarActivity implements
                 getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.center, deckFragment).commit();
+
         // getSupportActionBar().setTitle(deck.get(0).getCategory());
 
     }
