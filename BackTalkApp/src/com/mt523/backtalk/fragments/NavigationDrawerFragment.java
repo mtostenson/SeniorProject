@@ -116,7 +116,7 @@ public class NavigationDrawerFragment extends Fragment {
                 | ActionBar.DISPLAY_SHOW_HOME);
         TextView label1 = (TextView) customActionBar.findViewById(R.id.label1);
         categoryIcon = (ImageView) customActionBar
-                .findViewById(R.id.category_icon);        
+                .findViewById(R.id.category_icon);
         label1.setTypeface(tf);
 
         // Set up the categories
@@ -256,7 +256,7 @@ public class NavigationDrawerFragment extends Fragment {
                                                                   * Activity
                                                                   */
         mDrawerLayout, /* DrawerLayout object */
-        R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+        R.drawable.ic_action_navigation_menu, /* nav drawer image to replace 'Up' caret */
         R.string.navigation_drawer_open, /*
                                           * "open drawer" description for
                                           * accessibility

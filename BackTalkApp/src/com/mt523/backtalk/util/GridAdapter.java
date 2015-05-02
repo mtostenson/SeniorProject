@@ -41,14 +41,14 @@ public class GridAdapter extends ArrayAdapter<Card> {
         View button;
         if (convertView == null) {
             button = inflater.inflate(R.layout.grid_item, parent, false);
+            ((TextView) button).setTypeface(font);
         } else {
             button = (TextView) convertView;
         }
-        ((TextView) button).setTypeface(font);
-        ((TextView) button).setText(Integer.toString(position + 1));
         if (cards.get(position).locked) {
             button.setEnabled(false);
         }
+        ((TextView) button).setText(Integer.toString(position + 1));
         return button;
     }
 
