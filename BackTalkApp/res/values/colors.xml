@@ -13,11 +13,21 @@
     <color name="gray">#DDDDDD</color>
     <color name="gray2">#EEEEEE</color>
 
-    <!-- Categorical colors -->
+    <!--
+    Categorical colors
     <color name="places">#F833ADFF</color>
     <color name="movies">#F8A282BF</color>
     <color name="music">#F88B5A2B</color>
     <color name="food">#F8EBE86A</color>
-    <color name="sports">#F860D662</color>
+    <color name="sports">#F860D662</color> 
+    -->
+
+
+    <!-- Paletton generated palette -->
+    <color name="places">#F833AFFF</color>
+    <color name="movies">#F87733FF</color>
+    <color name="music">#F8D45946</color>
+    <color name="food">#F8FFCC33</color>
+    <color name="sports">#F83F9630</color>
 
 </resources>
