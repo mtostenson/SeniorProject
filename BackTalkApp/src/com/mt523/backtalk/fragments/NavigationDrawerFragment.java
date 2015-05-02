@@ -188,27 +188,32 @@ public class NavigationDrawerFragment extends Fragment {
                     .findViewById(R.id.category_list_item_icon);
             String currentCategory = values.get(position);
             categoryLabel.setText(currentCategory);
-            int drawable = R.drawable.ic_launcher;
-            switch (currentCategory.toLowerCase()) {
-            case "places":
-                drawable = R.drawable.places;
-                break;
-            case "movies/tv":
-                drawable = R.drawable.television;
-                break;
-            case "music":
-                drawable = R.drawable.note;
-                break;
-            case "food/drink":
-                drawable = R.drawable.cutlery;
-                break;
-            case "sports/leisure":
-                drawable = R.drawable.soccer;
-                break;
-            }
-            icon.setImageDrawable(getResources().getDrawable(drawable));
+            icon.setImageDrawable(getCategoryDrawable(currentCategory));
             return convertView;
         }
+
+    }
+    
+    public Drawable getCategoryDrawable(String currentCategory) {
+        int drawable = R.drawable.ic_launcher;
+        switch (currentCategory.toLowerCase()) {
+        case "places":
+            drawable = R.drawable.places;
+            break;
+        case "movies/tv":
+            drawable = R.drawable.television;
+            break;
+        case "music":
+            drawable = R.drawable.note;
+            break;
+        case "food/drink":
+            drawable = R.drawable.cutlery;
+            break;
+        case "sports/leisure":
+            drawable = R.drawable.soccer;
+            break;
+        }
+        return getResources().getDrawable(drawable);
     }
 
     @Override

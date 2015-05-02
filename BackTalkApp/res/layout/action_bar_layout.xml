@@ -18,30 +18,15 @@
         android:textColor="@android:color/white"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/label2"
+    <ImageView
+        android:id="@+id/category_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:padding="2dp"
-        android:shadowColor="@android:color/black"
-        android:shadowRadius="4"
-        
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/label1"
-        android:layout_alignLeft="@id/label2"
-        android:layout_alignRight="@id/label1"
-        android:layout_alignStart="@id/label2"
-        android:layout_centerVertical="true"
-        android:text="|"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:layout_margin="8dp"
+        android:background="@drawable/white_circle"
+        android:padding="6dp" />
 
 </RelativeLayout>

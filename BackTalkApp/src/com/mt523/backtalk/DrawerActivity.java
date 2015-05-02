@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jirbo.adcolony.AdColony;
@@ -64,6 +65,9 @@ public class DrawerActivity extends ActionBarActivity implements
     private DeckFragment deckFragment;
     private CardFragment cardFragment;
     private GuessFragment guessFragment;
+
+    // Views -------------------------------------------------------------------
+    private ImageView categoryIcon;
 
     private WavRecorder recorder;
     private MediaPlayer player;
@@ -108,9 +112,9 @@ public class DrawerActivity extends ActionBarActivity implements
         View customActionBar = actionBar.getCustomView();
         Typeface typeface = FontUtil.instance(DrawerActivity.this).getFont();
         TextView label1 = (TextView) customActionBar.findViewById(R.id.label1);
-        TextView label2 = (TextView) customActionBar.findViewById(R.id.label2);
+        categoryIcon = (ImageView) customActionBar
+                .findViewById(R.id.category_icon);
         label1.setTypeface(typeface);
-        label2.setTypeface(typeface);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
                 | ActionBar.DISPLAY_SHOW_HOME);
 
@@ -167,6 +171,14 @@ public class DrawerActivity extends ActionBarActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
+        if (mNavigationDrawerFragment.isDrawerOpen()) {
+            categoryIcon.setVisibility(View.INVISIBLE);
+        } else {
+            categoryIcon.setImageDrawable(mNavigationDrawerFragment
+                    .getCategoryDrawable(deck.get(0).getCategory()
+                            .toLowerCase()));
+            categoryIcon.setVisibility(View.VISIBLE);
+        }
         // actionBar.setTitle(mTitle);
     }
 
