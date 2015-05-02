@@ -46,6 +46,7 @@ import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.Card;
 import com.mt523.backtalk.util.AssetMapper;
 import com.mt523.backtalk.util.BackTalkDbHelper;
+import com.mt523.backtalk.util.ColorAnimator;
 import com.mt523.backtalk.util.FontUtil;
 import com.mt523.backtalk.util.WavRecorder;
 
@@ -363,8 +364,12 @@ public class DrawerActivity extends ActionBarActivity implements
                 .replace(R.id.center, deckFragment).commit();
 
         if (tint != null) {
-            tint.setBackgroundColor(AssetMapper.getCategoryColor(
-                    getBaseContext(), category));
+            // tint.setBackgroundColor(AssetMapper.getCategoryColor(
+            // getBaseContext(), category));
+            ColorAnimator.ofBackgroundColor(tint,
+                    AssetMapper.getCategoryColor(getBaseContext(), category))
+                    .start();
+            ;
         }
         // getSupportActionBar().setTitle(deck.get(0).getCategory());
 

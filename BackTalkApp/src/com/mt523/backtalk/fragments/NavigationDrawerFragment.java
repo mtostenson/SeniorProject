@@ -25,8 +25,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -114,7 +116,7 @@ public class NavigationDrawerFragment extends Fragment {
                 | ActionBar.DISPLAY_SHOW_HOME);
         TextView label1 = (TextView) customActionBar.findViewById(R.id.label1);
         categoryIcon = (ImageView) customActionBar
-                .findViewById(R.id.category_icon);
+                .findViewById(R.id.category_icon);        
         label1.setTypeface(tf);
 
         // Set up the categories
@@ -328,11 +330,9 @@ public class NavigationDrawerFragment extends Fragment {
                     .toLowerCase());
 
             // Switch the icon around
-            categoryIcon.setVisibility(View.INVISIBLE);
             categoryIcon.setImageDrawable(AssetMapper.getCategoryDrawable(
                     getActivity().getApplicationContext(),
                     categories.get(position).toLowerCase()));
-            categoryIcon.setVisibility(View.VISIBLE);
         }
         prefsEditor.putInt("position", position).commit();
     }
