@@ -25,17 +25,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mt523.backtalk.R;
-import com.mt523.backtalk.util.AssetMapper;
 import com.mt523.backtalk.util.BackTalkDbHelper;
+import com.mt523.backtalk.util.CategoryMapper;
 import com.mt523.backtalk.util.FontUtil;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -202,7 +200,7 @@ public class NavigationDrawerFragment extends Fragment {
                     .findViewById(R.id.category_list_item_icon);
             String currentCategory = values.get(position);
             categoryLabel.setText(currentCategory);
-            icon.setImageDrawable(AssetMapper.getCategoryDrawable(getActivity()
+            icon.setImageDrawable(CategoryMapper.getCategoryDrawable(getActivity()
                     .getApplicationContext(), currentCategory));
             return convertView;
         }
@@ -330,7 +328,7 @@ public class NavigationDrawerFragment extends Fragment {
                     .toLowerCase());
 
             // Switch the icon around
-            categoryIcon.setImageDrawable(AssetMapper.getCategoryDrawable(
+            categoryIcon.setImageDrawable(CategoryMapper.getCategoryDrawable(
                     getActivity().getApplicationContext(),
                     categories.get(position).toLowerCase()));
         }

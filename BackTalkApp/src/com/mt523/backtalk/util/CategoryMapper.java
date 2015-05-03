@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 
 import com.mt523.backtalk.R;
 
-public class AssetMapper {
+public class CategoryMapper {
 
     public static Drawable getCategoryDrawable(Context c, String category) {
         int drawable = R.drawable.ic_launcher;

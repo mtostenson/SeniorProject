@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange1_5"
+    android:background="#55000000"
     tools:context="com.mt523.backtalk.fragments.NavigationDrawerFragment" >
 
     <TextView

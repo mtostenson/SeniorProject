@@ -44,8 +44,8 @@ import com.mt523.backtalk.fragments.NavigationDrawerFragment;
 import com.mt523.backtalk.fragments.ProgressFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.Card;
-import com.mt523.backtalk.util.AssetMapper;
 import com.mt523.backtalk.util.BackTalkDbHelper;
+import com.mt523.backtalk.util.CategoryMapper;
 import com.mt523.backtalk.util.ColorAnimator;
 import com.mt523.backtalk.util.FontUtil;
 import com.mt523.backtalk.util.WavRecorder;
@@ -171,7 +171,7 @@ public class DrawerActivity extends ActionBarActivity implements
             // getBaseContext(), category));
             ColorAnimator.ofBackgroundColor(
                     tint,
-                    AssetMapper.getCategoryColor(getBaseContext(), deck.get(0)
+                    CategoryMapper.getCategoryColor(getBaseContext(), deck.get(0)
                             .getCategory().toLowerCase())).start();
             ;
         }

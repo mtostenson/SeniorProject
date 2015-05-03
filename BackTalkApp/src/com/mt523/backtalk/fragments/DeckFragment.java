@@ -24,7 +24,7 @@ public class DeckFragment extends Fragment {
     private static final String TAG = DeckFragment.class.getName();
 
     private DeckInterface activity;
-    private ArrayList<Card> deck;
+    public ArrayList<Card> deck;
     public GridAdapter adapter;
     public GridView grid;
 
