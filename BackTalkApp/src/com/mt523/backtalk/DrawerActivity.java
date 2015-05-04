@@ -169,18 +169,6 @@ public class DrawerActivity extends ActionBarActivity implements
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-
-        if (tint != null) {
-            // tint.setBackgroundColor(AssetMapper.getCategoryColor(
-            // getBaseContext(), category));
-            ColorAnimator.ofBackgroundColor(
-                    tint,
-                    CategoryMapper.getCategoryColor(getBaseContext(),
-                            deck.get(0).getCategory().toLowerCase())).start();
-            ;
-        }
-
-        // actionBar.setTitle(mTitle);
     }
 
     @Override
@@ -406,9 +394,9 @@ public class DrawerActivity extends ActionBarActivity implements
     }
 
     private void updateCredits(int amount) {
-        TextView t = (TextView) mNavigationDrawerFragment.getView()
-                .findViewById(R.id.stats_label);
-        t.setText("Credits: " + amount);
+//        TextView t = (TextView) mNavigationDrawerFragment.getView()
+//                .findViewById(R.id.stats_label);
+//        t.setText("Credits: " + amount);
         properties.setProperty("vc_name", vc_name);
         properties.setProperty("total_amount", "" + credits);
         try {
@@ -468,14 +456,14 @@ public class DrawerActivity extends ActionBarActivity implements
 
     public void unlockCard(int id) {
         int index = id % 100;
-        ((TextView) deckFragment.grid.getChildAt(index
-                - deckFragment.grid.getFirstVisiblePosition()))
-                .setEnabled(true);
-        deck.get(index).locked = false;
-        deckFragment.grid.invalidateViews();
-        deckFragment.adapter.notifyDataSetChanged();
-        Log.d(TAG, "Unlocked card id: " + id);
         try {
+            ((TextView) deckFragment.grid.getChildAt(index
+                    - deckFragment.grid.getFirstVisiblePosition()))
+                    .setEnabled(true);
+            deck.get(index).locked = false;
+            deckFragment.grid.invalidateViews();
+            deckFragment.adapter.notifyDataSetChanged();
+            Log.d(TAG, "Unlocked card id: " + id);
             checkDb();
             ContentValues values = new ContentValues();
             values.put("locked", 0);
@@ -517,4 +505,11 @@ public class DrawerActivity extends ActionBarActivity implements
         }
     }
 
+    @Override
+    public void changeColor(String category) {
+        if (tint != null) {
+            ColorAnimator.ofBackgroundColor(tint,
+                    CategoryMapper.getCategoryColor(this, category)).start();
+        }
+    }
 }

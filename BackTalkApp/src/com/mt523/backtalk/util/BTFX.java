@@ -12,11 +12,11 @@ public class BTFX {
     private static Context context;
 
     private static final String TAG = BTFX.class.getName();
-    
+
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor prefsEditor;
 
-    /* This class MUST be called first */
+    /* This zMUST be called first */
     public static void prepare(Context pContext) {
         context = pContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -31,12 +31,12 @@ public class BTFX {
     }
 
     public static void changeSetting(String setting, boolean value) {
-        prefsEditor.putBoolean(setting, value).commit();
+        prefsEditor.putBoolean(setting, value).apply();
         Log.d(TAG, String.format("%s set to %b", setting, value));
     }
 
     public static boolean getSetting(String setting) {
-        boolean result = prefs.getBoolean(setting, true); 
+        boolean result = prefs.getBoolean(setting, true);
         Log.d(TAG, String.format("%s read as %b", setting, result));
         return result;
     }

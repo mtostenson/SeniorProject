@@ -7,10 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.packets.client.Card;
+import com.mt523.backtalk.util.BTFX;
 import com.mt523.backtalk.util.BtAnimations;
 import com.mt523.backtalk.util.FontUtil;
 
@@ -34,7 +39,13 @@ public class CardFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater
                 .inflate(R.layout.card_layout, container, false);
-        // activity = (CardInterface) getActivity();
+        if (BTFX.getSetting("animations")) {
+            Animation animation = AnimationUtils.loadAnimation(getActivity(),
+                    android.R.anim.fade_in);
+            ((RelativeLayout) rootView)
+                    .setLayoutAnimation(new LayoutAnimationController(
+                            animation, .1f));
+        }
         display = (TextView) rootView.findViewById(R.id.display);
         resultMessage = (TextView) rootView
                 .findViewById(R.id.result_message_view);

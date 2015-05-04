@@ -7,10 +7,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.mt523.backtalk.R;
+import com.mt523.backtalk.util.BTFX;
 import com.mt523.backtalk.util.FontUtil;
 
 public class RecorderControlFragment extends Fragment {
@@ -26,6 +30,12 @@ public class RecorderControlFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.controller, container, false);
+        if (BTFX.getSetting("animations")) {
+            ((RelativeLayout) rootView)
+                    .setLayoutAnimation(new LayoutAnimationController(
+                            AnimationUtils.loadAnimation(getActivity(),
+                                    android.R.anim.fade_in), 0f));
+        }
         OnTouchListener onTouchListener = new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent m) {

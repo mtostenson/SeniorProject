@@ -1,6 +1,7 @@
 package com.mt523.backtalk.fragments;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,10 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.view.animation.GridLayoutAnimationController;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import com.mt523.backtalk.DrawerActivity;
 import com.mt523.backtalk.R;
@@ -67,6 +72,34 @@ public class DeckFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_deck, container,
                 false);
         grid = (GridView) rootView.findViewById(R.id.deck_grid);
+        if (BTFX.getSetting("animations")) {
+            Animation anim = AnimationUtils.loadAnimation(getActivity(),
+                    android.R.anim.fade_in);
+
+            LayoutAnimationController controller = new LayoutAnimationController(
+                    anim, .01f);
+            // controller.setOrder(LayoutAnimationController.ORDER_RANDOM);
+            grid.setLayoutAnimation(controller);
+            ((ViewGroup) rootView)
+                    .setLayoutAnimationListener(new AnimationListener() {
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            activity.changeColor(deck.get(0).getCategory()
+                                    .toLowerCase(Locale.ENGLISH));
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+                    });
+        } else {
+            activity.changeColor(deck.get(0).getCategory()
+                    .toLowerCase(Locale.ENGLISH));
+        }
         setupAdapter();
         return rootView;
     }
@@ -80,6 +113,8 @@ public class DeckFragment extends Fragment {
     public interface DeckInterface {
 
         public void onCardSelected(int id);
+
+        public void changeColor(String category);
 
     }
 

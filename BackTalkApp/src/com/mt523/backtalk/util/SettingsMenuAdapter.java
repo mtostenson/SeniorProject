@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -18,7 +19,8 @@ import com.mt523.backtalk.R;
 public class SettingsMenuAdapter extends ArrayAdapter<String> {
 
     private Context context;
-    private static final String[] settings = { "Vibration", "Sound" };
+    private static final String[] settings = { "Vibration", "Sound",
+            "Animations" };
 
     public SettingsMenuAdapter(Context context) {
         super(context, R.layout.settings_menu_item, settings);
@@ -35,7 +37,7 @@ public class SettingsMenuAdapter extends ArrayAdapter<String> {
         }
         TextView label = (TextView) convertView
                 .findViewById(R.id.setting_label);
-        CheckBox checkBox = (CheckBox) convertView
+        final CheckBox checkBox = (CheckBox) convertView
                 .findViewById(R.id.settings_checkbox);
         checkBox.setChecked(BTFX.getSetting(settings[position]
                 .toLowerCase(Locale.ENGLISH)));

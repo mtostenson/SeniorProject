@@ -18,8 +18,6 @@ public class GridAdapter extends ArrayAdapter<Card> {
 
     private static final String TAG = GridAdapter.class.getName();
 
-    private Context context;
-    private DeckInterface activity;
     private ArrayList<Card> cards;
 
     private Typeface font;
@@ -28,8 +26,6 @@ public class GridAdapter extends ArrayAdapter<Card> {
     public GridAdapter(Context context, ArrayList<Card> deck,
             DeckInterface activity) {
         super(context, R.layout.grid_item, deck);
-        this.context = context;
-        this.activity = activity;
         this.cards = deck;
         font = FontUtil.instance(context).getFont();
         inflater = (LayoutInflater) context
@@ -38,27 +34,18 @@ public class GridAdapter extends ArrayAdapter<Card> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View button;
-//        if (convertView == null) {
-            button = inflater.inflate(R.layout.grid_item, parent, false);
-            ((TextView) button).setTypeface(font);
-//        } else {
-//            button = (TextView) convertView;
-//        }
+        TextView button;
+        if (convertView == null) {
+            button = (TextView) inflater.inflate(R.layout.grid_item, parent,
+                    false);
+            button.setTypeface(font);
+        } else {
+            button = (TextView) convertView;
+        }
+        button.setText(Integer.toString(position + 1));
         if (cards.get(position).locked) {
             button.setEnabled(false);
         }
-        ((TextView) button).setText(Integer.toString(position + 1));
         return button;
-    }
-
-    @Override
-    public int getCount() {
-        return cards.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
     }
 }

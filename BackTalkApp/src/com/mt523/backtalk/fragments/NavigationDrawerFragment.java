@@ -160,7 +160,7 @@ public class NavigationDrawerFragment extends Fragment {
                         selectItem(position);
                     }
                 });
-        ((TextView) rootView.findViewById(R.id.stats_label)).setTypeface(tf);
+//        ((TextView) rootView.findViewById(R.id.stats_label)).setTypeface(tf);
         ((TextView) rootView.findViewById(R.id.categories_label))
                 .setTypeface(tf);
         ((TextView) rootView.findViewById(R.id.options_label)).setTypeface(tf);
