@@ -44,6 +44,7 @@ import com.mt523.backtalk.fragments.NavigationDrawerFragment;
 import com.mt523.backtalk.fragments.ProgressFragment;
 import com.mt523.backtalk.fragments.RecorderControlFragment;
 import com.mt523.backtalk.packets.client.Card;
+import com.mt523.backtalk.util.BTFX;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.CategoryMapper;
 import com.mt523.backtalk.util.ColorAnimator;
@@ -99,6 +100,9 @@ public class DrawerActivity extends ActionBarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Prepare BTFX
+        BTFX.prepare(DrawerActivity.this);
 
         setContentView(R.layout.activity_drawer);
 
@@ -171,8 +175,8 @@ public class DrawerActivity extends ActionBarActivity implements
             // getBaseContext(), category));
             ColorAnimator.ofBackgroundColor(
                     tint,
-                    CategoryMapper.getCategoryColor(getBaseContext(), deck.get(0)
-                            .getCategory().toLowerCase())).start();
+                    CategoryMapper.getCategoryColor(getBaseContext(),
+                            deck.get(0).getCategory().toLowerCase())).start();
             ;
         }
 
@@ -457,6 +461,7 @@ public class DrawerActivity extends ActionBarActivity implements
             cardFragment.shake();
             text.setText("Wrong!");
             Crouton.show(this, crouton);
+            BTFX.vibrate(50);
             return false;
         }
     }

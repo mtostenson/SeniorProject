@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ import com.mt523.backtalk.R;
 import com.mt523.backtalk.util.BackTalkDbHelper;
 import com.mt523.backtalk.util.CategoryMapper;
 import com.mt523.backtalk.util.FontUtil;
+import com.mt523.backtalk.util.SettingsMenuAdapter;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -170,6 +172,12 @@ public class NavigationDrawerFragment extends Fragment {
         mCategoryList.setAdapter(new CategoryListAdapter(getActionBar()
                 .getThemedContext(), categories));
         mCategoryList.setItemChecked(mCurrentSelectedPosition, true);
+
+        ListView settings = (ListView) rootView
+                .findViewById(R.id.settings_menu);
+        settings.setAdapter(new SettingsMenuAdapter(getActivity()
+                .getApplicationContext()));
+
         return rootView;
     }
 
@@ -200,8 +208,8 @@ public class NavigationDrawerFragment extends Fragment {
                     .findViewById(R.id.category_list_item_icon);
             String currentCategory = values.get(position);
             categoryLabel.setText(currentCategory);
-            icon.setImageDrawable(CategoryMapper.getCategoryDrawable(getActivity()
-                    .getApplicationContext(), currentCategory));
+            icon.setImageDrawable(CategoryMapper.getCategoryDrawable(
+                    getActivity().getApplicationContext(), currentCategory));
             return convertView;
         }
 
@@ -254,7 +262,10 @@ public class NavigationDrawerFragment extends Fragment {
                                                                   * Activity
                                                                   */
         mDrawerLayout, /* DrawerLayout object */
-        R.drawable.ic_action_navigation_menu, /* nav drawer image to replace 'Up' caret */
+        R.drawable.ic_action_navigation_menu, /*
+                                               * nav drawer image to replace
+                                               * 'Up' caret
+                                               */
         R.string.navigation_drawer_open, /*
                                           * "open drawer" description for
                                           * accessibility
@@ -420,5 +431,4 @@ public class NavigationDrawerFragment extends Fragment {
         void onCategorySelected(String category);
 
     }
-
 }

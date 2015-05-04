@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#55000000"
+    android:background="#99000000"
     tools:context="com.mt523.backtalk.fragments.NavigationDrawerFragment" >
 
     <TextView
@@ -45,5 +45,11 @@
         android:gravity="center"
         android:text="OPTIONS"
         android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <ListView
+        android:id="@+id/settings_menu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/options_label" />
 
 </RelativeLayout>

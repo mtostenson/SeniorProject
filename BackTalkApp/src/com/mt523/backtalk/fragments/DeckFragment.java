@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.mt523.backtalk.DrawerActivity;
 import com.mt523.backtalk.R;
 import com.mt523.backtalk.packets.client.Card;
+import com.mt523.backtalk.util.BTFX;
 import com.mt523.backtalk.util.GridAdapter;
 
 public class DeckFragment extends Fragment {
@@ -51,6 +52,7 @@ public class DeckFragment extends Fragment {
                 if (!deck.get(position).locked) {
                     activity.onCardSelected(position);
                 } else {
+                    BTFX.vibrate(50);
                     new UnlockDialog((DrawerActivity) getActivity(), deck
                             .get(position)).show(getActivity()
                             .getSupportFragmentManager(), "unlock?");
