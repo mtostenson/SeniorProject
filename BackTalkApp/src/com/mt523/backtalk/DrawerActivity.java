@@ -336,6 +336,12 @@ public class DrawerActivity extends ActionBarActivity implements
         deck = new ArrayList<Card>();
         deck.addAll(newDeck);
 
+        // HACK
+        while (deck.size() < 50) {
+            deck.add(new Card(deck.get(deck.size() - 1).getId() + 1,
+                    "More coming soon...", "ok", "none", category, true, false));
+        }
+
         /*
          * // Set up card fragment cardFragment =
          * CardFragment.newCard(deck.firstElement()); // cardFragment =
@@ -394,9 +400,9 @@ public class DrawerActivity extends ActionBarActivity implements
     }
 
     private void updateCredits(int amount) {
-//        TextView t = (TextView) mNavigationDrawerFragment.getView()
-//                .findViewById(R.id.stats_label);
-//        t.setText("Credits: " + amount);
+        // TextView t = (TextView) mNavigationDrawerFragment.getView()
+        // .findViewById(R.id.stats_label);
+        // t.setText("Credits: " + amount);
         properties.setProperty("vc_name", vc_name);
         properties.setProperty("total_amount", "" + credits);
         try {

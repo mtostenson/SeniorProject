@@ -31,13 +31,11 @@ public class BTFX {
     }
 
     public static void changeSetting(String setting, boolean value) {
-        prefsEditor.putBoolean(setting, value).apply();
-        Log.d(TAG, String.format("%s set to %b", setting, value));
+        prefsEditor.putBoolean(setting, value).commit();
     }
 
     public static boolean getSetting(String setting) {
         boolean result = prefs.getBoolean(setting, true);
-        Log.d(TAG, String.format("%s read as %b", setting, result));
         return result;
     }
 

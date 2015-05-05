@@ -58,6 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:text="\u00A9 2015 Michaelsoft" />
+        android:text="\u00A9 2015 Michael Tostenson" />
 
 </RelativeLayout>

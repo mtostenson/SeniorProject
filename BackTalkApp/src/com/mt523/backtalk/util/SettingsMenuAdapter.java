@@ -14,9 +14,12 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
+import com.immersion.content.Log;
 import com.mt523.backtalk.R;
 
 public class SettingsMenuAdapter extends ArrayAdapter<String> {
+
+    private static final String TAG = SettingsMenuAdapter.class.getName();
 
     private Context context;
     private static final String[] settings = { "Vibration", "Sound",
@@ -41,14 +44,18 @@ public class SettingsMenuAdapter extends ArrayAdapter<String> {
                 .findViewById(R.id.settings_checkbox);
         checkBox.setChecked(BTFX.getSetting(settings[position]
                 .toLowerCase(Locale.ENGLISH)));
-        checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        checkBox.setOnClickListener(new OnClickListener() {
+
             @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                BTFX.changeSetting(
-                        settings[position].toLowerCase(Locale.ENGLISH),
-                        isChecked);
+            public void onClick(View v) {
+                boolean checked = BTFX.getSetting(settings[position]
+                        .toLowerCase(Locale.ENGLISH));
+                Log.d(TAG, String.format("%s checked: %b", settings[position],
+                        checked));
+                BTFX.changeSetting(settings[position]
+                        .toLowerCase(Locale.ENGLISH), checked ? false : true);
             }
+
         });
         label.setText(settings[position].toUpperCase(Locale.ENGLISH));
         return convertView;
