@@ -95,10 +95,6 @@ public class CardFragment extends Fragment {
         resultMessage.setVisibility(View.VISIBLE);
     }
 
-    public void shake() {
-        BtAnimations.instance.shake(display);
-    }
-
     public interface CardInterface {
 
         public void goToCard(int index);

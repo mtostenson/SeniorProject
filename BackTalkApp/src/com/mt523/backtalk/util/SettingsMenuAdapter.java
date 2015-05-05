@@ -22,7 +22,7 @@ public class SettingsMenuAdapter extends ArrayAdapter<String> {
     private static final String TAG = SettingsMenuAdapter.class.getName();
 
     private Context context;
-    private static final String[] settings = { "Vibration", "Sound",
+    private static final String[] settings = { "Vibration", "Sounds",
             "Animations" };
 
     public SettingsMenuAdapter(Context context) {

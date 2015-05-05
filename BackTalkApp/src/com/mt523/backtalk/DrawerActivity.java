@@ -448,14 +448,17 @@ public class DrawerActivity extends ActionBarActivity implements
                     android.R.color.holo_green_light));
             text.setText("Correct!");
             Crouton.show(this, crouton);
+            BTFX.vibrate(500);
+            BTFX.playSound("correct");
             return true;
         } else {
             crouton.setBackgroundColor(getResources().getColor(
                     android.R.color.holo_red_light));
-            cardFragment.shake();
+            BTFX.shake((TextView)cardFragment.getView().findViewById(R.id.display));
             text.setText("Wrong!");
             Crouton.show(this, crouton);
             BTFX.vibrate(50);
+            BTFX.playSound("incorrect");
             return false;
         }
     }
