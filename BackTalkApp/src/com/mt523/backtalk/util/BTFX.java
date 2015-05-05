@@ -16,6 +16,8 @@ public class BTFX {
 
     private static final String TAG = BTFX.class.getName();
 
+    private static MediaPlayer mp;
+
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor prefsEditor;
 
@@ -34,6 +36,9 @@ public class BTFX {
     }
 
     public static void playSound(String name) {
+        if (mp != null) {
+            mp.release();
+        }
         if (prefs.getBoolean("sounds", true)) {
             int sound = 0;
             switch (name) {
@@ -47,7 +52,7 @@ public class BTFX {
                 sound = R.raw.done;
                 break;
             }
-            MediaPlayer mp = MediaPlayer.create(context, sound);
+            mp = MediaPlayer.create(context, sound);
             mp.start();
         }
     }
@@ -65,6 +70,12 @@ public class BTFX {
     public static boolean getSetting(String setting) {
         boolean result = prefs.getBoolean(setting, true);
         return result;
+    }
+    
+    public static void release() {
+        if(mp != null) {
+            mp.release();
+        }
     }
 
 }

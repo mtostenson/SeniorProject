@@ -148,6 +148,7 @@ public class DrawerActivity extends ActionBarActivity implements
     protected void onPause() {
         super.onPause();
         AdColony.pause();
+        BTFX.release();
         if (database != null) {
             database.close();
         }
