@@ -39,11 +39,10 @@ public class GridAdapter extends ArrayAdapter<Card> {
         button.setTypeface(font);
         button.setText(Integer.toString(position + 1));
         Card card = cards.get(position);
-        if (card.locked) {
-            button.setEnabled(false);
-        } else if (card.solved) {
+        button.setEnabled(!card.locked);
+        if (!card.locked) {
             ((TextView) rootview.findViewById(R.id.checkmark))
-                    .setVisibility(View.VISIBLE);
+                    .setVisibility(card.solved ? View.VISIBLE : View.INVISIBLE);
         }
         return rootview;
     }

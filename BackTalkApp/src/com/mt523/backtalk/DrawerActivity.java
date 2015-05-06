@@ -467,9 +467,9 @@ public class DrawerActivity extends ActionBarActivity implements
     public void unlockCard(int id) {
         int index = id % 100;
         try {
-            ((TextView) deckFragment.grid.getChildAt(index
+            ((TextView) ((RelativeLayout) deckFragment.grid.getChildAt(index
                     - deckFragment.grid.getFirstVisiblePosition()))
-                    .setEnabled(true);
+                    .findViewById(R.id.grid_item_text)).setEnabled(true);
             deck.get(index).locked = false;
             deckFragment.grid.invalidateViews();
             deckFragment.adapter.notifyDataSetChanged();
@@ -480,6 +480,7 @@ public class DrawerActivity extends ActionBarActivity implements
             String where = "_id='" + id + "'";
             database.update(BackTalkDbHelper.TABLE_CARDS, values, where, null);
         } catch (Exception e) {
+            Log.d(TAG, "EXCEPTION EXCEPTION EXCEPTION");
             e.printStackTrace();
         }
     }
