@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ShadowText"
-    android:layout_width="64dp"
-    android:layout_height="64dp"
-    android:layout_marginTop="4dp"
-    android:background="@drawable/button2"
-    android:gravity="center"
-    android:textSize="24sp" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
 
-</TextView>
+    <TextView
+        android:id="@+id/grid_item_text"
+        style="@style/ShadowText"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/button2"
+        android:gravity="center"
+        android:textSize="24sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/checkmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/green_circle"
+        android:gravity="center"
+        android:text="\u2713"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        android:textStyle="bold" />
+
+</RelativeLayout>

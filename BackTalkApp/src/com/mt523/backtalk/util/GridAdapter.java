@@ -34,14 +34,17 @@ public class GridAdapter extends ArrayAdapter<Card> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        TextView button;
-        button = (TextView) inflater.inflate(R.layout.grid_item, parent, false);
+        View rootview = inflater.inflate(R.layout.grid_item, parent, false);
+        TextView button = (TextView) rootview.findViewById(R.id.grid_item_text);
         button.setTypeface(font);
-
         button.setText(Integer.toString(position + 1));
-        if (cards.get(position).locked) {
+        Card card = cards.get(position);
+        if (card.locked) {
             button.setEnabled(false);
+        } else if (card.solved) {
+            ((TextView) rootview.findViewById(R.id.checkmark))
+                    .setVisibility(View.VISIBLE);
         }
-        return button;
+        return rootview;
     }
 }

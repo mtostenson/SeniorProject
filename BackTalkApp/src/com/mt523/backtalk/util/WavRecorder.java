@@ -96,10 +96,8 @@ public class WavRecorder implements OnRecordPositionUpdateListener {
                 if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
 
                     // External storage directory
-                    File folder = new File(
-                            Environment.getExternalStorageDirectory()
-                                    + "/Backtalk/");
-                    folder.mkdir();
+                    File folder = context.getFilesDir();
+//                    folder.mkdir();
 
                     // fileForward = new File(context.getFilesDir(),
                     // "forward.wav");

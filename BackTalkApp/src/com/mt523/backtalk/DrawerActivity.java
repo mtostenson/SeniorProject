@@ -136,11 +136,10 @@ public class DrawerActivity extends ActionBarActivity implements
         // Initialize player
         player = new MediaPlayer();
         player.setOnCompletionListener(this);
-        folder = new File(Environment.getExternalStorageDirectory()
-                + "/BackTalk/");
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
+        folder = this.getFilesDir();
+        // if (!folder.exists()) {
+        // folder.mkdir();
+        // }
 
     }
 
@@ -455,7 +454,8 @@ public class DrawerActivity extends ActionBarActivity implements
         } else {
             crouton.setBackgroundColor(getResources().getColor(
                     android.R.color.holo_red_light));
-            BTFX.shake((TextView)cardFragment.getView().findViewById(R.id.display));
+            BTFX.shake((TextView) cardFragment.getView().findViewById(
+                    R.id.display));
             text.setText("Wrong!");
             Crouton.show(this, crouton);
             BTFX.vibrate(50);

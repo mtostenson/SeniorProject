@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mt523.backtalk.R;
+import com.mt523.backtalk.util.BTFX;
 import com.mt523.backtalk.util.BtAnimations;
 import com.mt523.backtalk.util.FontUtil;
 import com.mt523.backtalk.util.WavRecorder.ReverseProgressUpdater;
@@ -40,6 +41,7 @@ public class ProgressFragment extends Fragment implements
 
     @Override
     public void onReverseCompleted() {
+        BTFX.playSound("done");
         getFragmentManager().popBackStack();
     }
 
